@@ -1,0 +1,23 @@
+{
+  "name": "twitter-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Aplicación de redes sociales",
+  "scripts": {
+    "start": "node_modules/.bin/webpack-dev-server --progress"
+  },
+  "author": "Oscar Blancarte",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^1.12.*",
+    "webpack-dev-server": "^1.10.*",
+    "babel-preset-react": "^6.24.1"
+  },
+  "dependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
