@@ -1,3 +1,8 @@
 body{
   background-color: #F5F8FA;
 }
+
+
+img {
+  max-width: 250px;
+}
