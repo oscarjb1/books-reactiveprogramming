@@ -1,24 +1,17 @@
 import React from 'react'
 import { render } from 'react-dom'
-import ListItem from './ListItem'
+import APIInvoker from "./utils/APIInvoker"
+import TweetsContainer from './TweetsContainer'
 
 class App extends React.Component{
 
-  render(){
-    let items = [{
-        name: 'Item 1',
-        price: 100
-      }, {
-        name: 'Item 2',
-        price: 200
-    }]
+  constructor(props){
+    super(props)
+  }
 
+  render(){
     return (
-      <ul>
-        <For each="item" index='index' of={ items }>
-          <ListItem product={item}  />
-        </For>
-      </ul>
+      <TweetsContainer />
     )
   }
 }

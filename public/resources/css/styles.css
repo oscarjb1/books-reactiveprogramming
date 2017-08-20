@@ -6,3 +6,134 @@ body{
 img {
   max-width: 250px;
 }
+
+/** TWEET COMPONENT **/
+
+.tweet{
+  padding: 10px;
+  border-top: 1px solid #e6ecf0;
+}
+
+
+.tweet .tweet-link{
+  position: absolute;
+  display: block;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.tweet:hover{
+  background-color: #F5F8FA;
+  cursor: pointer;
+}
+
+.tweet.detail{
+  border-top: none;
+}
+
+.tweet.detail:hover{
+  background-color: #FFF;
+  cursor: default;
+}
+
+
+.tweet .tweet-img{
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.tweet .tweet-avatar{
+  border: 1px solid #333;
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  /*left: 25px;*/
+  border-radius: 5px;
+  text-align: center;
+}
+
+.tweet .tweet-body{
+  margin-left: 55px;
+}
+
+.tweet .tweet-body .tweet-name{
+  color: #333;
+}
+
+.tweet .tweet-body .tweet-name{
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-right: 10px;
+  z-index: 10000;
+}
+
+.tweet .tweet-body .tweet-name:hover{
+  text-decoration: underline;
+}
+
+.tweet .tweet-body .tweet-username{
+  text-transform: lowercase;
+  color: #999;
+}
+
+.tweet.detail .tweet-body .tweet-user{
+  margin-left: 70px;
+}
+
+.tweet.detail .tweet-body{
+  margin-left: 0px;
+}
+
+.tweet.detail .tweet-body .tweet-name{
+  font-size: 18px;
+}
+
+.tweet-detail-responses .tweet.detail .tweet-body .tweet-message{
+  font-size: 16px;
+}
+
+.tweet.detail .tweet-body .tweet-username{
+  display: block;
+  font-size: 16px;
+}
+
+.tweet.detail .tweet-message{
+  position: relative;
+  display: block;
+  margin-top: 25px;
+  font-size: 26px;
+  left: 0px;
+}
+
+.reply-icon,
+.like-icon{
+  color: #999;
+  transition: 0.5s;
+  padding-right: 40px;
+  font-weight: bold;
+  font-size: 18px;
+  z-index: 99999;
+}
+
+.like-icon:hover{
+  color: #E2264D;
+}
+
+.like-icon.liked{
+  color: #E2264D;
+}
+
+.reply-icon:hover{
+  color: #1DA1F2;
+}
+
+.like-icon i{
+  color: inherit;
+}
+
+.reply-icon i{
+  color: inherit;
+}
