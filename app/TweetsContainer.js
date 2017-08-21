@@ -67,21 +67,6 @@ class TweetsContainer extends React.Component{
     //   addNewTweet: this.addNewTweet.bind(this)
     // }
 
-    let a = {
-      edit: false,
-    }
-
-    let b = {
-      edit: true,
-      tweet: [
-        "tweet 1",
-        "tweet 2"
-      ]
-    }
-    let c = Object.assign({},a,b)
-    b.tweet.push("tweet 3")
-    console.log(b,c);
-
     return (
       <main className="twitter-panel">
         {/* <Choose>
