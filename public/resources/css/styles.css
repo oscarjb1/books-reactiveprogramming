@@ -137,3 +137,81 @@ img {
 .reply-icon i{
   color: inherit;
 }
+
+
+/** SIGNUP COMPONENT **/
+#signup{
+  position: relative;
+  padding-top: 150px;
+  height: auto;
+}
+
+#signup h1{
+  font-size: 27px;
+  margin-bottom: 30px;
+}
+
+#signup .signup-form{
+  position: relative;
+  display: block;
+  width: 400px;
+  margin: 0 auto;
+}
+
+#signup input{
+  margin-bottom: 30px;
+}
+
+#signup .signup-form button{
+  background-color: #1DA1F2;
+  padding: 10px;
+  outline: none;
+  border: none;
+}
+
+#signup input[type="text"],
+#signup input[type="password"]{
+  outline: none;
+  border: 1px solid #999;
+  font-size: 18px;
+  width: 100%;
+  padding: 8px;
+
+  border-radius: 5px;
+}
+
+#signup button{
+  display: block;
+  padding: 5px;
+  width: 100%;
+
+}
+
+#signup .user-test{
+  margin-top: 30px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
+#signup #usernameLabel{
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  padding: 10px;
+}
+
+#signup #usernameLabel.ok{
+  color: #1DA1F2;
+}
+
+#signup #usernameLabel.fail{
+  color: tomato;
+}
+
+#signup #submitBtnLabel{
+  display: block;
+  text-align: center;
+  color: red;
+  margin-top: 20px;
+}
