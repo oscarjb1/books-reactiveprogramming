@@ -215,3 +215,251 @@ img {
   color: red;
   margin-top: 20px;
 }
+
+
+
+
+/** Profile Component **/
+
+.twitter-panel{
+  background-color: #fff;
+  background-clip: inherit;
+  border: 1px solid #e6ecf0;
+  border-radius: 5px;
+  line-height: inherit;
+}
+
+#suggestedUsers,
+#profile{
+  max-width: 350px;
+}
+
+#profile{
+  float: right;
+  width: 100%;
+  max-width: 350px;
+}
+
+#profile{
+  overflow: hidden;
+}
+
+#profile .profile-banner{
+}
+
+#profile .profile-banner a{
+  min-height: 100px;
+  background-size: cover;
+  display: block;
+
+}
+
+#profile .profile-body{
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+#profile .profile-body img{
+  position: absolute;
+  display: inline-block;
+  border: 3px solid #fafafa;
+  border-radius: 8px;
+  height: 75px;
+  width: 75px;
+  left: 10px;
+  top: -30px;
+}
+
+#profile .profile-body > a{
+  margin-left: 90px;
+  color: inherit;
+}
+
+ .profile-body > a:hover{
+  text-decoration: underline;
+}
+
+#profile .profile-resumen a {
+  color:#657786;
+}
+
+#profile .profile-resumen a:hover{
+  color: #1B95E0;
+}
+
+#profile .profile-resumen a .profile-resumen-title{
+  font-size: 10px;
+  margin: 0px;
+  color:inherit;
+  transition: 0.5s;
+}
+
+#profile .profile-resumen a .profile-resumen-value{
+  color: #1B95E0;
+  font-size: 18px;
+}
+
+#profile .profile-name,
+#profile .profile-username{
+  display: block;
+  margin: 0px;
+}
+
+#profile .profile-username{
+  color: #66757f;
+}
+
+#profile .profile-name{
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/** SuggestedUsers Component **/
+#suggestedUsers{
+  padding: 10px;
+}
+
+
+#suggestedUsers .su-title{
+  font-size: 18px;
+  color: #66757f;
+  margin: 0px;
+}
+
+#suggestedUsers .sg-item{
+  padding: 5px 0px;
+}
+
+#suggestedUsers .sg-item .su-avatar{
+  position: relative;
+}
+
+#suggestedUsers .sg-item .su-avatar img{
+  display: inline-block;
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  top: 3px;
+}
+
+#suggestedUsers .sg-item .sg-body{
+  position: relative;
+  display: block;
+  margin-left: 55px;
+
+}
+
+#suggestedUsers .sg-item .sg-body .sg-name{
+  color: #333;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+#suggestedUsers .sg-item .sg-body .sg-username{
+
+}
+
+#suggestedUsers .sg-item .sg-body i{
+  color: #fafafa;
+}
+
+
+/** Reply component **/
+
+.reply{
+  padding: 10px;
+  border-top: 1px solid #e6ecf0;
+  background-color: #E8F4FB;
+}
+
+.reply .reply-avatar{
+  display: inline-block;
+  position: absolute;
+  border: 1px solid #333;
+  border-radius: 5px;
+  height: 35px;
+  width: 35px;
+  left: 40px;
+  text-align: center;
+}
+
+.reply .reply-body{
+  margin-left: 80px;
+
+}
+
+.reply .reply-body textarea{
+  height: 35px;
+  display: block;
+  width: 100%;
+  border: 1px solid #DDE2E6;
+  outline: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  resize: none;
+  border-radius: 5px;
+
+}
+
+.reply .reply-body .reply-selected{
+  height: 70px;
+}
+
+.reply .reply-body .image-box{
+  display: block;
+  position: relative;
+  color: #F1F1F1;
+  padding: 10px;
+  border-left: 1px solid #DDE2E6;
+  border-right: 1px solid #DDE2E6;
+  border-bottom: 1px solid #DDE2E6;
+  border-radius: 0 0 5px 5px;
+  max-height: 250px;
+  width: 100%;
+}
+
+.tweet-event{
+  position: absolute;
+  display: block;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+.reply .reply-body .image-box img{
+  display: inline-block;
+  position: relative;
+  max-height: 230px;
+  border-radius: 5px;
+  max-width: 100%;
+}
+
+
+.reply .reply-controls{
+  padding: 10px 0px 0px 0px;
+  text-align: right;
+  margin-left: 55px;
+}
+
+.reply .reply-controls button{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.reply .reply-controls button i{
+  color: inherit;
+  font-size: inherit;
+}
+
+.reply .reply-controls .char-counter{
+  margin-right: 10px;
+  color: #333;
+}
+
+input[type="file"]{
+  display: none;
+}
