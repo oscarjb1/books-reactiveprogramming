@@ -858,3 +858,97 @@ input[type="file"]{
   padding: 10px;
   font-size: 19px;
 }
+
+
+/** UserCard component **/
+.user-card{
+  margin-bottom: 20px;
+  position: relative;
+  border: 1px solid #E6ECF0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.user-card .user-card-banner{
+  background-position: center;
+  background-size: cover;
+  height: 100px;
+  border-bottom: 1px solid ##E6ECF0;
+}
+
+.user-card .user-card-avatar{
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  position: absolute;
+  top: 70px;
+  left: 10px;
+}
+
+
+.user-card .user-card-body{
+  padding-top: 100px;
+  background-color: #FFF;
+  padding: 10px 10px 20px;
+
+}
+
+.user-card .user-card-body .user-card-username p{
+  font-size: 12px;
+  color: #66757f;
+}
+
+.user-card .user-card-body .user-card-name{
+  font-weight: bold;
+  font-size: 18px;
+  display: block;
+  position: relative;
+  margin-top: 40px;
+}
+
+.user-card .user-card-body .user-card-name p {
+  margin: 0px;
+}
+
+.user-card .user-card-body .user-card-description{
+  font-size: 14px;
+  color: #66757f;
+}
+
+
+.user-card .user-card-body .user-card-username:hover,
+.user-card .user-card-body .user-card-name:hover{
+  text-decoration: underline;
+}
+
+
+/** CSSTransactionGroup **/
+
+.card-enter{
+  opacity: 0;
+}
+
+.card-enter.card-enter-active{
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+/*.card-leave {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.card-leave.card-leave-active {
+  opacity: 0.01;
+
+}
+
+.card-appear {
+  opacity: 0.01;
+}
+
+.card-appear.card-appear-active {
+  transition: 0.5s;
+  transform: scale(1.2);
+  margin: 30px;
+}*/

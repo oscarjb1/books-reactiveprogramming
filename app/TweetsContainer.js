@@ -74,7 +74,7 @@ class TweetsContainer extends React.Component{
         <Choose>
           <When condition={this.props.onlyUserTweet} >
             <div className="tweet-container-header">
-              TweetsDD
+              Tweets
             </div>
           </When>
           <Otherwise>
