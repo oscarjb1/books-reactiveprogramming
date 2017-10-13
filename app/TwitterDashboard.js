@@ -6,6 +6,10 @@ import PropTypes from 'prop-types'
 
 class TwitterDashboard extends React.Component{
 
+  constructor(props){
+    super(props)
+  }
+
   render(){
     return(
       <div id="dashboard">

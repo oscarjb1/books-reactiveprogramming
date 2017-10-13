@@ -13,18 +13,20 @@ class TweetsContainer extends React.Component{
     }
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(prevProps.profile.userName !== this.props.profile.userName){
-  //     let username = this.props.profile.userName
-  //     let onlyUserTweet = this.props.onlyUserTweet
-  //     this.loadTweets(username, onlyUserTweet)
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.profile.userName !== this.props.profile.userName){
+      let username = this.props.profile.userName
+      let onlyUserTweet = this.props.onlyUserTweet
+      this.loadTweets(username, onlyUserTweet)
+    }
+  }
 
   componentWillMount(){
-    let username = this.props.profile.userName
-    let onlyUserTweet = this.props.onlyUserTweet
-    this.loadTweets(username, onlyUserTweet)
+    if(!this.props.onlyUserTweet){
+      let username = this.props.profile.userName
+      let onlyUserTweet = this.props.onlyUserTweet
+      this.loadTweets(username, onlyUserTweet)
+    }
   }
 
   loadTweets(username, onlyUserTweet){

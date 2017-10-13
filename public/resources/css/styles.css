@@ -463,3 +463,398 @@ img {
 input[type="file"]{
   display: none;
 }
+
+
+/** Toolbar componente **/
+
+.bs-test{
+  display: inline-block;
+  position: absolute;
+}
+
+#dashboard{
+  margin-top: 60px;
+}
+
+.navbar-brand{
+  font-size: 24px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(50%);
+}
+
+.navbar-brand i{
+  color: #1DA1F2;
+}
+
+
+.navbar{
+  background-color: #FFFFFF;
+  height: 48px;
+}
+
+.navbar-nav>li>a{
+  padding: 0px;
+}
+
+.navbar-avatar{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  margin: 9px 10px;
+}
+
+#menu{
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+#menu li{
+  display: inline-block;
+  color: #666;
+  position: relative;
+}
+
+#menu li::before{
+  content: "";
+  position: absolute;
+  display: block;
+  left: 0px;
+  right: 0px;
+  height: 0px;
+  background-color: #1B95E0;
+  bottom: -2px;
+  z-index: 1000;
+  transition: 0.5s;
+}
+
+
+
+#menu li:hover::before{
+  height: 5px;
+}
+
+#menu li:hover{
+  color: #1DA1F2;
+}
+
+
+#menu li.selected::before{
+  height: 5px!important;
+}
+
+#menu li.selected{
+  color: #1DA1F2;
+}
+
+
+#menu li a{
+  display: inline-block;
+  padding: 13px 18px 0px 0px;
+  font-size: 12px;
+  font-weight: bold;
+  color: inherit;
+}
+
+#menu li a:focus{
+  text-decoration: none;
+}
+
+
+#menu li a span{
+  color: inherit;
+}
+
+
+#menu li .menu-item{
+  color: inherit;
+  padding: 0px 10px;
+}
+
+#menu li .menu-item-icon{
+  font-size: 18px;
+  font-size: 24px;
+  vertical-align: sub;
+  padding-right: 5px;
+  color: inherit;
+}
+
+@media (max-width: 576px) {
+  #menu li .menu-item{
+    padding: 0px 5px;
+  }
+
+  #menu li a{
+    padding: 13px 0px 0px 0px;
+    margin-right: 5px;
+  }
+}
+
+
+/** UserPage **/
+
+.app-container{
+  margin-top: 50px;
+}
+
+#user-page{
+}
+
+#user-page .user-header{
+  margin-bottom: 10px;
+}
+
+#user-page .user-header .user-banner{
+  position: relative;
+  background-color: #fafafa;
+  height: 280px;
+  background-size: cover;
+  background-position: center;
+}
+
+#user-page .user-header .select-banner{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  padding-top: 100px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.select-banner:hover{
+  padding-top: 90px;
+  border: 10px solid tomato;
+}
+
+#user-page .user-header .user-summary{
+  border-bottom: 1px solid #dadada;
+  position: relative;
+}
+
+#user-page .user-header .user-summary .user-avatar{
+  position: absolute;
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  border-radius: 10px;
+  left: 50px;
+  top: -100px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-sizing: content-box;
+  border: 5px solid #fafafa;
+  box-shadow: 0 0 3px #999;
+}
+
+#user-page .user-avatar .avatar-box{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#user-page .user-header .user-summary .user-avatar img{
+  height: 100%;
+  width: 100%;
+}
+
+.select-avatar{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  top: 0px;
+  padding-top: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.select-avatar:hover{
+  padding-top: 40px;
+  border: 5px solid tomato;
+}
+
+#user-page .user-avatar{
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  border-radius: 10px;
+  left: 50px;
+  top: -100px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-sizing: content-box;
+  border: 5px solid #fafafa;
+  box-shadow: 0 0 3px #999;
+}
+
+#user-page .user-avatar img{
+  height: 100%;
+  width: 100%;
+}
+
+#user-page .user-header .user-summary .user-summary-menu{
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+}
+
+#user-page .user-header .user-summary .user-summary-menu li{
+  text-align: center;
+  padding: 0px;
+  display: inline-block;
+  position: relative;
+
+}
+
+#user-page .user-header .user-summary .user-summary-menu li a{
+  padding: 15px 15px 0px;
+  display: inline-block;
+  position: relative;
+}
+
+#user-page .user-header .user-summary .user-summary-menu li a::before{
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 0px;
+  bottom: 0px;
+  background: #1B95E0;
+  transition: 0.3s;
+
+}
+
+#user-page .user-header .user-summary .user-summary-menu li a:hover::before{
+  display: block;
+  height: 5px;
+}
+
+#user-page .user-header .user-summary .user-summary-menu li.selected a::before{
+  display: block;
+  height: 5px;
+}
+
+#user-page .user-header .user-summary .user-summary-menu li .summary-label{
+  font-size: 11px;
+  margin: 0px;
+}
+
+#user-page .user-header .user-summary .user-summary-menu li .summary-value{
+  font-weight: bold;
+  font-size: 18px;
+  color: #666;
+
+}
+
+#user-page .user-header .user-summary .edit-button{
+  margin: 15px 0px;
+  float: right;
+}
+
+.tweet-footer{
+  padding-top: 10px;
+}
+
+#user-info{
+  top: -180px;
+  position: absolute;
+  display: block;
+  position: relative;
+  padding: 10px;
+  margin-left: 35px;
+  max-width: 350px;
+  width: 280px;
+  max-width: 100%;
+  float: right;
+
+}
+
+#user-info .user-info-edit{
+  padding: 10px;
+  background-color: #E8F4FB;
+
+}
+
+#user-info .user-info-edit .user-info-username{
+  color: #1B96E0;
+  margin-top: 10px;
+}
+
+#user-info .user-info-edit textarea,
+#user-info .user-info-edit input{
+  display: block;
+  width: 100%;
+  border: 1px solid #A3D4F2;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#user-info .user-info-edit textarea{
+  resize: none;
+  height: 220px;
+}
+
+#user-info .user-info-name{
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0px;
+}
+
+#user-info .user-info-username{
+  font-size: 14px;
+}
+
+#user-info .user-info-description{
+
+}
+
+@media (min-width: 576px) {
+  #user-page .user-avatar{
+    width: 150px;
+    height: 150px;
+  }
+
+  #user-info{
+    top: -150px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #user-info{
+    top: -180px;
+  }
+
+  #user-page .user-avatar{
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (min-width: 1000px) {
+  #user-page .user-header .user-banner{
+    height: 300px;
+  }
+}
+
+@media (min-width: 1400px) {
+  #user-page .user-header .user-banner{
+    height: 400px;
+  }
+}
+
+@media (min-width: 1800px) {
+  #user-page .user-header .user-banner{
+    height: 500px;
+  }
+}
+
+/** MyTweets component **/
+.tweet-container-header{
+  padding: 10px;
+  font-size: 19px;
+}

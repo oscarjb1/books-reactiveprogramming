@@ -1,7 +1,7 @@
 import React from 'react'
 import update from 'react-addons-update'
 import APIInvoker from './utils/APIInvoker'
-// import { browserHistory,Link } from 'react-router'
+import { browserHistory,Link } from 'react-router'
 
 class Signup extends React.Component{
 
@@ -82,7 +82,7 @@ class Signup extends React.Component{
     }
 
     APIInvoker.invokePOST('/signup',request, response => {
-      // browserHistory.push('/login');
+      browserHistory.push('/login');
       alert('Usuario registrado correctamente');
     },error => {
       console.log("Error al cargar los Tweets");
@@ -132,7 +132,7 @@ class Signup extends React.Component{
               className="shake animated hidden "></label>
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
               <strong>test/test</strong></p>
-            {/* <p>¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link> </p> */}
+            <p>¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link> </p>
             <p>¿Ya tienes cuenta? Iniciar sesión</p>
           </form>
         </div>

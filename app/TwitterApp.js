@@ -1,6 +1,6 @@
 import React from 'react'
 import APIInvoker from "./utils/APIInvoker"
-// import Toolbar from './Toolbar'
+import Toolbar from './Toolbar'
 import { browserHistory } from 'react-router'
 import TwitterDashboard from './TwitterDashboard'
 import Login from './Login'
@@ -41,10 +41,9 @@ class TwitterApp extends React.Component{
   }
 
   render(){
-
     return (
       <div id="mainApp">
-        {/* <Toolbar profile={this.state.profile} selected="home"/> */}
+        <Toolbar profile={this.state.profile} />
         <Choose>
           <When condition={!this.state.load}>
             <div className="tweet-detail">
