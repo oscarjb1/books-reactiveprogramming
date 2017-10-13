@@ -22,11 +22,9 @@ class TweetsContainer extends React.Component{
   }
 
   componentWillMount(){
-    if(!this.props.onlyUserTweet){
-      let username = this.props.profile.userName
-      let onlyUserTweet = this.props.onlyUserTweet
-      this.loadTweets(username, onlyUserTweet)
-    }
+    let username = this.props.profile.userName
+    let onlyUserTweet = this.props.onlyUserTweet
+    this.loadTweets(username, onlyUserTweet)
   }
 
   loadTweets(username, onlyUserTweet){
@@ -74,7 +72,7 @@ class TweetsContainer extends React.Component{
         <Choose>
           <When condition={this.props.onlyUserTweet} >
             <div className="tweet-container-header">
-              TweetsDD
+              Tweets
             </div>
           </When>
           <Otherwise>
