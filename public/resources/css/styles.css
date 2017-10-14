@@ -952,3 +952,57 @@ input[type="file"]{
   transform: scale(1.2);
   margin: 30px;
 }*/
+
+
+
+
+/** TweetReply Component **/
+
+html.modal-mode{
+  overflow-y: hidden;
+}
+
+.fullscreen{
+  position: fixed;
+  background-color: rgba(0,0,0,0.5);
+  top: 0;
+  right: 0;
+  left: 0;
+  height: auto;
+  z-index: 999999;
+  overflow: auto;
+  bottom: 0;
+}
+
+.fullscreen .tweet-detail{
+  max-width: 700px;
+  overflow: hidden;
+  border-radius: 5px;
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: 100px;
+  position: relative;
+  width: 60%;
+  background-color: #fff;
+}
+
+.fullscreen .tweet-detail .tweet-close{
+  position: absolute;
+  display: inline-block;
+  right: 15px;
+  top: 10px;
+}
+
+.fullscreen .tweet-detail .tweet-close:hover{
+  cursor: pointer;
+}
+
+.tweet-detail .tweet-detail-responses{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.tweet-detail .tweet-details-reply{
+  border-bottom: 1px solid #E6ECF0;
+}
