@@ -7,7 +7,6 @@ import UserPage from './UserPage'
 import MyTweets from './MyTweets'
 import Followings from './Followings'
 import Followers from './Followers'
-import TweetDetail from './TweetDetail'
 import { Router, Route, browserHistory, IndexRoute } from "react-router"
 
 render((
@@ -20,7 +19,7 @@ render((
         <IndexRoute component={MyTweets} tab="tweets" />
         <Route path="followers" component={Followers} tab="followers"/>
         <Route path="following" component={Followings} tab="followings"/>
-        <Route path=":tweet" component={TweetDetail}/>
+        {/* <Route path=":tweet" component={TweetDetail}/> */}
       </Route>
     </Route>
   </Router>
