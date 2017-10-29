@@ -43,7 +43,7 @@ class TweetReply extends React.Component{
             onClick={this.handleClose.bind(this)}/>
           <Tweet tweet={this.props.tweet} detail={true} />
           <div className="tweet-details-reply">
-            <Reply profile={this.props.profile} operations={operations}/>
+            <Reply operations={operations}/>
           </div>
         </div>
       </div>
@@ -52,8 +52,7 @@ class TweetReply extends React.Component{
 }
 
 TweetReply.propTypes = {
-  tweet: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
+  tweet: PropTypes.object.isRequired
 }
 
 export default TweetReply;

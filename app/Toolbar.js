@@ -1,17 +1,20 @@
 import React from 'react'
 import { browserHistory,Link } from 'react-router'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import { logout } from './actions/Actions'
 
 class Toolbar extends React.Component{
   constructor(props){
     super(props)
-    this.state= {}
+    // this.state= {}
   }
 
   logout(e){
     e.preventDefault()
     window.localStorage.removeItem("token")
     window.localStorage.removeItem("username")
+    this.props.logout()
     window.location = '/login';
   }
 
@@ -41,17 +44,17 @@ class Toolbar extends React.Component{
                 </li>
               </ul>
             </div>
-            <If condition={this.props.profile != null} >
+            <If condition={this.props.state.profile != null} >
               <ul className="nav navbar-nav navbar-right">
                 <li className="dropdown">
                   <a href="#" className="dropdown-toggle" data-toggle="dropdown"
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <img className="navbar-avatar"
-                      src={this.props.profile.avatar}
-                      alt={this.props.profile.userName}/>
+                      src={this.props.state.profile.avatar}
+                      alt={this.props.state.profile.userName}/>
                   </a>
                   <ul className="dropdown-menu">
-                    <li><a href={"/"+this.props.profile.userName}>
+                    <li><a href={"/"+this.props.state.profile.userName}>
                       Ver perfil</a></li>
                     <li role="separator" className="divider"></li>
                     <li><a href="#" onClick={this.logout.bind(this)}>
@@ -67,8 +70,16 @@ class Toolbar extends React.Component{
   }
 }
 
-Toolbar.propTypes = {
-  profile: PropTypes.object
+// Toolbar.propTypes = {
+//   profile: PropTypes.object
+// }
+
+const mapStateToProps = (state) => {
+  return {
+    state: {
+      profile: state.loginReducer.profile
+    }
+  }
 }
 
-export default Toolbar;
+export default connect(mapStateToProps,{logout})(Toolbar);

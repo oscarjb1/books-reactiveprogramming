@@ -2,6 +2,8 @@ import React from 'react'
 import update from 'react-addons-update'
 import config from '../config.js'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { updateReplyForm, resetReplyForm } from './actions/Actions'
 
 const uuidV4 = require('uuid/v4');
 
@@ -9,29 +11,35 @@ class Reply extends React.Component{
 
   constructor(props){
     super(props)
-    this.state={
-      focus: false,
-      message: '',
-      image: null
-    }
+    // this.state={
+    //   focus: false,
+    //   message: '',
+    //   image: null
+    // }
   }
 
   handleChangeMessage(e){
-    this.setState(update(this.state,{
-      message: {$set: e.target.value}
-    }))
+    this.props.updateReplyForm(e.target.name,e.target.value)
+
+    // this.setState(update(this.state,{
+    //   message: {$set: e.target.value}
+    // }))
   }
 
   handleMessageFocus(e){
-    let newState = update(this.state,{
-        focus: {$set: true}
-    })
-    this.setState(newState)
+    this.props.updateReplyForm('focus',true)
+
+    // let newState = update(this.state,{
+    //     focus: {$set: true}
+    // })
+    // this.setState(newState)
   }
 
   handleMessageFocusLost(e){
-    if(this.state.message.length=== 0){
-      this.reset();
+    if(this.props.state.reply.message.length=== 0){
+      this.props.resetReplyForm()
+
+      // this.reset();
     }
   }
 
@@ -43,36 +51,39 @@ class Reply extends React.Component{
   }
 
   reset(){
-    let newState = update(this.state,{
-        focus: {$set: false},
-        message: {$set: ''},
-        image: {$set:null}
-    })
-    this.setState(newState)
-
+    this.props.resetReplyForm()
     this.refs.reply.blur();
+
+    // let newState = update(this.state,{
+    //     focus: {$set: false},
+    //     message: {$set: ''},
+    //     image: {$set:null}
+    // })
+    // this.setState(newState)
   }
 
   newTweet(e){
     e.preventDefault();
 
     let tweet = {
+      isNew: true,
       _id: uuidV4(),
       _creator: {
-        _id: this.props.profile._id,
-        name: this.props.profile.name,
-        userName: this.props.profile.userName,
-        avatar: this.props.profile.avatar
+        _id: this.props.state.profile._id,
+        name: this.props.state.profile.name,
+        userName: this.props.state.profile.userName,
+        avatar: this.props.state.profile.avatar
       },
       date: Date.now,
-      message: this.state.message,
-      image: this.state.image,
+      message: this.props.state.reply.message,
+      image: this.props.state.reply.image,
       liked: false,
       likeCounter: 0
     }
 
     this.props.operations.addNewTweet(tweet)
-    this.reset();
+    // this.reset()
+    this.props.resetReplyForm()
   }
 
   imageSelect(e){
@@ -85,10 +96,12 @@ class Reply extends React.Component{
     }
 
     reader.onloadend = () => {
-      let newState = update(this.state,{
-        image: {$set: reader.result}
-      })
-      this.setState(newState)
+      // let newState = update(this.state,{
+      //   image: {$set: reader.result}
+      // })
+      // this.setState(newState)
+
+      this.props.updateReplyForm('image', reader.result)
     }
     reader.readAsDataURL(file)
   }
@@ -97,11 +110,12 @@ class Reply extends React.Component{
   render(){
     let randomID = uuidV4();
 
+    let reply = this.props.state.reply
+
     return (
       <section className="reply">
-        <If condition={this.props.profile!=null} >
-          <img src={this.props.profile.avatar} className="reply-avatar" />
-        </If>
+        <img src={this.props.state.profile.avatar}
+          className="reply-avatar"/>
         <div className="reply-body">
           <textarea
             ref="reply"
@@ -109,27 +123,30 @@ class Reply extends React.Component{
             type="text"
             maxLength = {config.tweets.maxTweetSize}
             placeholder="¿Qué está pensando?"
-            className={this.state.focus ? 'reply-selected' : ''}
-            value={this.state.message}
+            className={reply.focus ? 'reply-selected' : ''}
+            value={reply.message}
             onKeyDown={this.handleKeyDown.bind(this)}
             onBlur={this.handleMessageFocusLost.bind(this)}
             onFocus={this.handleMessageFocus.bind(this)}
             onChange={this.handleChangeMessage.bind(this)}
             />
-            <If condition={this.state.image != null} >
-              <div className="image-box"><img src={this.state.image}/></div>
+            <If condition={reply.image != null} >
+              <div className="image-box">
+                <img src={reply.image}/>
+              </div>
             </If>
-
         </div>
-        <div className={this.state.focus ? 'reply-controls' : 'hidden'}>
+        <div className={reply.focus ?
+          'reply-controls' : 'hidden'}>
           <label htmlFor={"reply-camara-" + randomID}
-            className={this.state.message.length===0 ?
+            className={reply.message.length===0 ?
               'btn pull-left disabled' : 'btn pull-left'}>
             <i className="fa fa-camera fa-2x" aria-hidden="true"></i>
           </label>
 
-          <input href="#" className={this.state.message.length===0 ?
-            'btn pull-left disabled' : 'btn pull-left'}
+          <input href="#"
+            className={reply.message.length===0 ?
+              'btn pull-left disabled' : 'btn pull-left'}
             accept=".gif,.jpg,.jpeg,.png"
             type="file"
             onChange={this.imageSelect.bind(this)}
@@ -137,9 +154,10 @@ class Reply extends React.Component{
           </input>
 
           <span ref="charCounter" className="char-counter">
-            {config.tweets.maxTweetSize - this.state.message.length }</span>
+            {config.tweets.maxTweetSize - reply.message.length }
+          </span>
 
-          <button className={this.state.message.length===0 ?
+          <button className={reply.message.length===0 ?
               'btn btn-primary disabled' : 'btn btn-primary '}
               onClick={this.newTweet.bind(this)}
               >
@@ -156,4 +174,14 @@ Reply.propTypes = {
   operations: PropTypes.object.isRequired
 }
 
-export default Reply;
+const mapStateToProps = state => {
+  return {
+    state:{
+      reply: state.replyReducer,
+      profile: state.loginReducer.profile
+    }
+  }
+}
+
+export default connect( mapStateToProps,
+  {updateReplyForm, resetReplyForm} )(Reply);

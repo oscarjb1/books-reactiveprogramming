@@ -2,143 +2,172 @@ import React from 'react'
 import update from 'react-addons-update'
 import APIInvoker from './utils/APIInvoker'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import {
+  getUserProfile,
+  chageToEditMode,
+  cancelEditMode,
+  updateUserPageForm,
+  userPageImageUpload,
+  userPageSaveChanges,
+  followUser,
+  relogin}
+from './actions/Actions'
 
 class UserPage extends React.Component{
 
   constructor(props){
     super(props)
-    this.state = {
-      edit: false,
-      profile:{
-        name: "",
-        description: "",
-        avatar: null,
-        banner: null,
-        userName: ""
-      }
-    }
+    // this.state = {
+    //   edit: false,
+    //   profile:{
+    //     name: "",
+    //     description: "",
+    //     avatar: null,
+    //     banner: null,
+    //     userName: ""
+    //   }
+    // }
   }
 
   componentWillMount(){
     let user = this.props.params.user
-    APIInvoker.invokeGET('/profile/' + user, response => {
-      this.setState({
-        edit:false,
-        profile: response.body
-      });
-    },error => {
-      console.log("Error al cargar los Tweets");
-      window.location = '/'
-    })
+    this.props.getUserProfile(user)
+
+    // APIInvoker.invokeGET('/profile/' + user, response => {
+    //   this.setState({
+    //     edit:false,
+    //     profile: response.body
+    //   });
+    // },error => {
+    //   console.log("Error al cargar los Tweets");
+    //   window.location = '/'
+    // })
   }
 
   imageSelect(e){
     let id = e.target.id
-    e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
+    this.props.userPageImageUpload(e)
 
-    if(file.size > 1240000){
-      alert('La imagen supera el máximo de 1MB')
-      return
-    }
-
-    reader.onloadend = () => {
-      if(id == 'bannerInput'){
-        this.setState(update(this.state,{
-          profile: {
-            banner: {$set: reader.result}
-          }
-        }))
-      }else{
-        this.setState(update(this.state,{
-          profile: {
-            avatar: {$set: reader.result}
-          }
-        }))
-      }
-    }
-    reader.readAsDataURL(file)
+    // e.preventDefault();
+    // let reader = new FileReader();
+    // let file = e.target.files[0];
+    //
+    // if(file.size > 1240000){
+    //   alert('La imagen supera el máximo de 1MB')
+    //   return
+    // }
+    //
+    // reader.onloadend = () => {
+    //   if(id == 'bannerInput'){
+    //     this.setState(update(this.state,{
+    //       profile: {
+    //         banner: {$set: reader.result}
+    //       }
+    //     }))
+    //   }else{
+    //     this.setState(update(this.state,{
+    //       profile: {
+    //         avatar: {$set: reader.result}
+    //       }
+    //     }))
+    //   }
+    // }
+    // reader.readAsDataURL(file)
   }
 
   handleInput(e){
-    let id = e.target.id
-    this.setState(update(this.state,{
-      profile: {
-        [id]: {$set: e.target.value}
-      }
-    }))
+    this.props.updateUserPageForm(e)
+
+    // let id = e.target.id
+    // this.setState(update(this.state,{
+    //   profile: {
+    //     [id]: {$set: e.target.value}
+    //   }
+    // }))
   }
 
   cancelEditMode(e){
-    let currentState = this.state.currentState
-    this.setState(update(this.state,{
-      edit: {$set: false},
-      profile: {$set: currentState}
-    }))
+    this.props.cancelEditMode()
+
+    // let currentState = this.state.currentState
+    // this.setState(update(this.state,{
+    //   edit: {$set: false},
+    //   profile: {$set: currentState}
+    // }))
   }
 
   changeToEditMode(e){
-    if(this.state.edit){
-      let request = {
-        username: this.state.profile.userName,
-        name: this.state.profile.name,
-        description: this.state.profile.description,
-        avatar: this.state.profile.avatar,
-        banner: this.state.profile.banner
-      }
-
-      APIInvoker.invokePUT('/secure/profile', request, response => {
-        if(response.ok){
-          this.setState(update(this.state,{
-            edit: {$set: false}
-          }))
-        }
-      },error => {
-        console.log("Error al actualizar el perfil");
-      })
+    if(this.props.state.edit){
+      this.props.userPageSaveChanges()
+      this.props.relogin()
     }else{
-      let currentState = this.state.profile
-      this.setState(update(this.state,{
-        edit: {$set: true},
-        currentState: {$set: currentState}
-      }))
+      this.props.chageToEditMode()
     }
+
+    // if(this.state.edit){
+    //   let request = {
+    //     username: this.state.profile.userName,
+    //     name: this.state.profile.name,
+    //     description: this.state.profile.description,
+    //     avatar: this.state.profile.avatar,
+    //     banner: this.state.profile.banner
+    //   }
+    //
+    //   APIInvoker.invokePUT('/secure/profile', request, response => {
+    //     if(response.ok){
+    //       this.setState(update(this.state,{
+    //         edit: {$set: false}
+    //       }))
+    //     }
+    //   },error => {
+    //     console.log("Error al actualizar el perfil");
+    //   })
+    // }else{
+    //   let currentState = this.state.profile
+    //   this.setState(update(this.state,{
+    //     edit: {$set: true},
+    //     currentState: {$set: currentState}
+    //   }))
+    // }
   }
 
   follow(e){
-    let request = {
-      followingUser: this.props.params.user
-    }
-    APIInvoker.invokePOST('/secure/follow', request, response => {
-      if(response.ok){
-        this.setState(update(this.state,{
-          profile:{
-            follow: {$set: !response.unfollow}
-          }
-        }))
-      }
-    },error => {
-      console.log("Error al actualizar el perfil");
-    })
+    this.props.followUser(this.props.params.user)
+    // this.props.relogin()
+
+    // let request = {
+    //   followingUser: this.props.params.user
+    // }
+    // APIInvoker.invokePOST('/secure/follow', request, response => {
+    //   if(response.ok){
+    //     this.setState(update(this.state,{
+    //       profile:{
+    //         follow: {$set: !response.unfollow}
+    //       }
+    //     }))
+    //   }
+    // },error => {
+    //   console.log("Error al actualizar el perfil");
+    // })
   }
 
   render(){
-    let profile = this.state.profile
+    let profile = this.props.state.profile
     let storageUserName = window.localStorage.getItem("username")
 
     let bannerStyle = {
       backgroundImage: 'url(' + (profile.banner) + ')'
     }
 
-    let childs = this.props.children
-      && React.cloneElement(this.props.children, { profile: profile })
+    // let childs = this.props.children
+    //   && React.cloneElement(this.props.children, { profile: profile })
 
     return(
       <div id="user-page" className="app-container">
         <header className="user-header">
           <div className="user-banner" style={bannerStyle}>
-            <If condition={this.state.edit}>
+            <If condition={this.props.state.edit}>
               <div>
                 <label htmlFor="bannerInput" className="btn select-banner">
                   <i className="fa fa-camera fa-2x" aria-hidden="true"></i>
@@ -186,7 +215,8 @@ class UserPage extends React.Component{
                   <If condition={profile.userName === storageUserName}>
                     <button className="btn btn-primary  edit-button"
                       onClick={this.changeToEditMode.bind(this)}  >
-                      {this.state.edit ? "Guardar" : "Editar perfil"}</button>
+                      {this.props.state.edit ? "Guardar" : "Editar perfil"}
+                    </button>
                   </If>
 
                   <If condition={profile.follow != null &&
@@ -202,7 +232,7 @@ class UserPage extends React.Component{
                     </button>
                   </If>
 
-                  <If condition= {this.state.edit}>
+                  <If condition= {this.props.state.edit}>
                     <button className="btn edit-button" onClick=
                       {this.cancelEditMode.bind(this)} >Cancelar</button>
                   </If>
@@ -218,7 +248,7 @@ class UserPage extends React.Component{
               <aside id="user-info">
                 <div className="user-avatar">
                   <Choose>
-                    <When condition={this.state.edit} >
+                    <When condition={this.props.state.edit} >
                       <div className="avatar-box">
                         <img src={profile.avatar} />
                         <label htmlFor="avatarInput"
@@ -242,7 +272,7 @@ class UserPage extends React.Component{
                   </Choose>
                 </div>
                 <Choose>
-                  <When condition={this.state.edit} >
+                  <When condition={this.props.state.edit} >
                     <div className="user-info-edit">
                       <input maxLength="20" type="text" value={profile.name}
                         onChange={this.handleInput.bind(this)} id="name"/>
@@ -265,7 +295,7 @@ class UserPage extends React.Component{
             </div>
             <div className="col-xs-12 col-sm-8 col-md-7
               col-md-push-1 col-lg-7">
-              {childs}
+              {this.props.children}
             </div>
           </div>
         </div>
@@ -273,4 +303,12 @@ class UserPage extends React.Component{
     )
   }
 }
-export default UserPage;
+
+const mapStateToProps = (state) => {
+  return {
+    state: state.userPageReducer
+  }
+}
+
+export default connect(mapStateToProps,
+  {getUserProfile, chageToEditMode, cancelEditMode, updateUserPageForm, userPageImageUpload, userPageSaveChanges, followUser, relogin})(UserPage);
