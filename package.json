@@ -1,6 +1,12 @@
 {
   "name": "twitter-app",
   "version": "1.0.0",
+  "keywords" : "React, NodeJS, MongoDB",
+  "bugs":{
+    "url": "http://oscarblancarteblog.com",
+    "email": "oblancarte@oscarblancarteblog.com"
+  },
+  "homepage": "http://reactiveprogramming.io",
   "main": "index.js",
   "description": "Aplicación de redes sociales",
   "scripts": {
