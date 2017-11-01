@@ -39,17 +39,18 @@ export const relogin = () => (dispatch,getState) => {
   let token = window.localStorage.getItem("token")
   if(token == null){
     dispatch(loginFail())
-    browserHistory.push('/login');
+    browserHistory.push('/login')
   }else{
     APIInvoker.invokeGET('/secure/relogin', response => {
       window.localStorage.setItem("token", response.token)
       window.localStorage.setItem("username", response.profile.userName)
       dispatch(loginSuccess( response.profile ))
     },error => {
-      console.log("Error al autenticar al autenticar al usuario " );
+      console.log("Error al autenticar al autenticar al usuario " )
       window.localStorage.removeItem("token")
       window.localStorage.removeItem("username")
-      browserHistory.push('/login');
+      dispatch(loginFail())
+      browserHistory.push('/login')
     })
   }
 }
