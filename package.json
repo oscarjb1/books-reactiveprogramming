@@ -1,8 +1,8 @@
 {
   "name": "twitter-app",
   "version": "1.0.0",
-  "keywords" : "React, NodeJS, MongoDB",
-  "bugs":{
+  "keywords": "React, NodeJS, MongoDB",
+  "bugs": {
     "url": "http://oscarblancarteblog.com",
     "email": "oblancarte@oscarblancarteblog.com"
   },
@@ -28,6 +28,7 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "history": "^4.6.1",
+    "mongoose": "^4.13.0",
     "react": "^15.0.0",
     "react-addons-update": "^15.6.0",
     "react-dom": "^15.0.0",

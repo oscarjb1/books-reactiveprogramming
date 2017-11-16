@@ -39,17 +39,18 @@ export const relogin = () => (dispatch,getState) => {
   let token = window.localStorage.getItem("token")
   if(token == null){
     dispatch(loginFail())
-    browserHistory.push('/login');
+    browserHistory.push('/login')
   }else{
     APIInvoker.invokeGET('/secure/relogin', response => {
       window.localStorage.setItem("token", response.token)
       window.localStorage.setItem("username", response.profile.userName)
       dispatch(loginSuccess( response.profile ))
     },error => {
-      console.log("Error al autenticar al autenticar al usuario " );
+      console.log("Error al autenticar al autenticar al usuario " )
       window.localStorage.removeItem("token")
       window.localStorage.removeItem("username")
-      browserHistory.push('/login');
+      dispatch(loginFail())
+      browserHistory.push('/login')
     })
   }
 }
@@ -80,7 +81,7 @@ export const loginRequest = ()  => (dispatch, getState) => {
   APIInvoker.invokePOST('/login',credential, response => {
     window.localStorage.setItem("token", response.token)
     window.localStorage.setItem("username", response.profile.userName)
-    window.location = '/';
+    window.location = '/'
   },error => {
     dispatch(loginFailForm(error.message))
   })
@@ -127,7 +128,7 @@ export const signup = () => (dispatch, getState) => {
     }
 
     APIInvoker.invokePOST('/signup',request, response => {
-      browserHistory.push('/login');
+      browserHistory.push('/login')
     },error => {
       dispatch(signupResultFail(error.error))
     })
@@ -160,7 +161,7 @@ export const getTweet = (username, onlyUserTweet) =>
   response => {
     dispatch(loadTweetsSuccess(response.body))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
@@ -173,7 +174,7 @@ export const addNewTweet = (newTweet) => (dispatch, getState) => {
 
     dispatch(addNewTweetSuccess(newState.tweets))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
@@ -198,7 +199,7 @@ export const likeTweet = (tweetId, like) => (dispatch, getState) => {
   APIInvoker.invokePOST('/secure/like', request, response => {
     dispatch(likeTweetRequest(tweetId, response.body.likeCounter))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
@@ -211,7 +212,7 @@ export const likeTweetDetail = (tweetId, like) => (dispatch, getState) => {
   APIInvoker.invokePOST('/secure/like', request, response => {
     dispatch(likeTweetDetailRequest(tweetId, response.body.likeCounter))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
@@ -251,7 +252,7 @@ export const getSuggestedUsers = ()  => (dispatch, getState) => {
   APIInvoker.invokeGET('/secure/suggestedUsers', response => {
     dispatch(loadSuggestedUserSuccess(response.body))
   },error => {
-    console.log("Error al actualizar el perfil");
+    console.log("Error al actualizar el perfil")
   })
 }
 
@@ -276,7 +277,7 @@ export const findFollowersFollowings = (username, type) =>
   APIInvoker.invokeGET('/' + type + "/" + username, response => {
     dispatch(findFollowersFollowingsRequest(response.body))
   },error => {
-    console.log("Error al obtener los seguidores");
+    console.log("Error al obtener los seguidores")
   })
 }
 
@@ -298,7 +299,7 @@ export const getUserProfile = (username)  => (dispatch, getState) => {
   APIInvoker.invokeGET('/profile/' + username, response => {
     dispatch(getUserProfileResponse(response.body))
   },error => {
-    console.log("Error al cargar los Tweets", error);
+    console.log("Error al cargar los Tweets", error)
   })
 }
 
@@ -340,8 +341,8 @@ const updateUserPageFormRequest = (field, value) => ({
 
 export const userPageImageUpload = (event) => (dispatch, getState) => {
   let id = event.target.id
-  let reader = new FileReader();
-  let file = event.target.files[0];
+  let reader = new FileReader()
+  let file = event.target.files[0]
 
   if(file.size > 1240000){
     alert('La imagen supera el máximo de 1MB')
@@ -381,7 +382,7 @@ export const userPageSaveChanges = () => (dispatch, getState) => {
   APIInvoker.invokePUT('/secure/profile', request, response => {
     dispatch(userPageSaveChangesRequest())
   },error => {
-    console.log("Error al actualizar el perfil");
+    console.log("Error al actualizar el perfil")
   })
 }
 
@@ -397,7 +398,7 @@ export const followUser = (username) => (dispatch,getState) => {
   APIInvoker.invokePOST('/secure/follow', request, response => {
     dispatch(followUserRequest(!response.unfollow))
   },error => {
-    console.log("Error al actualizar el perfil");
+    console.log("Error al actualizar el perfil")
   })
 }
 
@@ -412,7 +413,7 @@ export const loadTweetDetail= (tweet) => (dispatch, getState) => {
   APIInvoker.invokeGET('/tweetDetails/'+tweet, response => {
     dispatch(loadTweetDetailRequest(response.body))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
@@ -432,7 +433,7 @@ export const addNewTweetReply = (newTweetReply, tweetParentID) => (dispatch, get
     newTweetReply._id = response.tweet._id
     dispatch(addNewTweetReplyRequest(newTweetReply))
   },error => {
-    console.log("Error al cargar los Tweets");
+    console.log("Error al cargar los Tweets")
   })
 }
 
