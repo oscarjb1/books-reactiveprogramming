@@ -15,6 +15,9 @@ var profile = new Schema({
   followersRef: [{type: Schema.Types.ObjectId, ref: 'Profile', default: [] }],
   date: {type: Date, default: Date.now},
 });
+//Unique Plugin validate
+profile.plugin(uniqueValidator, { message: 'El {PATH} to be unique.' });
+
 //Helpers
 profile.query.byUsername = function(userName){
   return this.find({userName: userName})

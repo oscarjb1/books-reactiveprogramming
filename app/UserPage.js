@@ -133,7 +133,14 @@ class UserPage extends React.Component{
   }
 
   follow(e){
-    this.props.followUser(this.props.params.user)
+    if(!$('#followBtn').hasClass('disabled')){
+      $('#followBtn').addClass('disabled')
+      setTimeout(function(e){
+        $('#followBtn').removeClass('disabled')
+      }, 5000);
+      this.props.followUser(this.props.params.user)
+    }
+
     // this.props.relogin()
 
     // let request = {
@@ -221,7 +228,7 @@ class UserPage extends React.Component{
 
                   <If condition={profile.follow != null &&
                     profile.userName !== storageUserName} >
-                    <button className="btn edit-button"
+                    <button id="followBtn" className="btn edit-button"
                       onClick={this.follow.bind(this)} >
                       {profile.follow
                         ? (<span><i className="fa fa-user-times"

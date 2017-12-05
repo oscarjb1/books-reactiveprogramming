@@ -299,7 +299,8 @@ export const getUserProfile = (username)  => (dispatch, getState) => {
   APIInvoker.invokeGET('/profile/' + username, response => {
     dispatch(getUserProfileResponse(response.body))
   },error => {
-    console.log("Error al cargar los Tweets", error)
+    browserHistory.push('/')//Not found, redirecto to /
+    console.log("Error al cargar el perfil", error)
   })
 }
 

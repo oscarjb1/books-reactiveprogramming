@@ -5,54 +5,52 @@ var path = require('path')
 var webpack = require('webpack')
 var config = require('./webpack.config')
 var compiler = webpack(config)
-// var mongoose = require('mongoose')
-// var configuration = require('./config')
-// var vhost = require('vhost')
-// var api = require('./server/api')
+var mongoose = require('mongoose')
+var configuration = require('./config')
+var vhost = require('vhost')
+var api = require('./api/api')
 
-// var opts = {
-//     server: {
-//         socketOptions: {keepAlive: 1}
-//     }
-// };
-//
-// switch (app.get('env')) {
-//     case 'development':
-//         mongoose.connect(configuration.mongodb.development.connectionString, opts);
-//         break;
-//     case 'production':
-//         mongoose.connect(configuration.mongodb.production.connectionString, opts);
-//         break;
-//     default:
-//         throw new Error('Unknown execution environment: ' + app.get('env'));
-// }
+var opts = {
+    useMongoClient: true,
+    appname: "Mini Twitter",
+    poolSize: 10,
+    autoIndex: false,
+    bufferMaxEntries: 0,
+    reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+    reconnectInterval: 500,
+    autoReconnect: true,
+    loggerLevel: "error", //error / warn / info / debug
+    keepAlive: 120,
+    validateOptions: true
+}
 
+// let connectString = app.get('env')==='production' ?
+//   configuration.mongodb.production.connectionString :
+//   configuration.mongodb.development.connectionString
 
-// app.use('*', require('cors')());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json({limit:'10mb'}));
+let connectString = configuration.mongodb.development.connectionString
+mongoose.connect(connectString, opts, function(err){
+   if (err) throw err;
+   console.log("==> Conexión establecida con MongoDB");
+})
+
+app.use('*', require('cors')());
+
+app.use('/public', express.static(__dirname + '/public'))
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json({limit:'10mb'}))
 
 app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
-}));
+}))
 
-
-// app.use(vhost('api.*', api));
-
-// app.get('/bundle.js', function (req, res) {
-//     res.sendFile(path.join(__dirname, 'public/bundle.js'));
-// });
-//
-// app.get('/styles.css', function (req, res) {
-//     res.sendFile(path.join(__dirname, 'public/resources/styles.css'));
-// });
+app.use(vhost('api.*', api));
 
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'))
 });
 
 app.listen(8080, function () {
-  console.log('Example app listening on port 8080!');
+  console.log('Example app listening on port 8080!')
 });

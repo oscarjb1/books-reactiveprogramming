@@ -1,0 +1,67 @@
+doctype html
+html(lang="es")
+  head
+    title Mini Twitter API REST
+    link(rel='stylesheet',
+      href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css')
+    script(
+      src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js')
+    script.
+      hljs.initHighlightingOnLoad();
+    link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet')
+    link(rel='stylesheet',
+      href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+      integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u',
+      crossorigin='anonymous')
+    link(rel='stylesheet', href='/public/apidoc/api-styles.css')
+  body
+    .container
+      .row
+        .col-xs-12
+          .method-templete
+            if secure
+              span.secure-icon &#128274;
+            .form-group
+              label(for='name') Nombre
+              output#name #{title}
+            .form-group
+              label(for='desc') Descripción
+              output#desc #{desc}
+            .form-group
+              label(for='url') URL
+              output#url #{url}
+            .form-group
+              label(for='method') Method
+              output#method #{method}
+            .form-group
+              label(for='urlParams') URL Params
+              ul.list-group1
+                each item in urlParams
+                  li.list-group-item
+                    strong= item.name + ': '
+                    span= item.desc
+                    if item.require
+                    span.badge.badge-warning.badge-pill requerido
+                else
+                  li.list-group-item Sin parámetros
+            .form-group
+              label(for='requestFormat') Formato del request
+              <pre><code class="json">#{requestFormat}</code></pre>
+            .form-group
+              label(for='dataParams') Request
+              <pre><code class="json">#{dataParams}</code></pre>
+            .form-group
+              label(for='successResponse') Respuesta OK
+              <pre><code class="json">#{successResponse}</code></pre>
+            .form-group
+              label(for='errorResponse') Respuesta Error
+              <pre><code class="json">#{errorResponse}</code></pre>
+            if secure
+              .alert.alert-danger
+                strong &#128274; Servicio con seguridad
+                p Este es un servicio con seguridad habilitada, para poder ser 
+                  |  ejecutado, es requerido que se le envíe el
+                  strong  token
+                  |  dentro del header
+                  strong  authorization
+                  |  de lo contrario, el servicio negará el acceso.

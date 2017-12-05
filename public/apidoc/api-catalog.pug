@@ -1,0 +1,26 @@
+doctype html
+html(lang="es")
+  head
+    title Mini Twitter API REST
+    link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet')
+    link(rel='stylesheet'
+      href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+      integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u'
+      crossorigin='anonymous')
+    link(rel='stylesheet', href='/public/apidoc/api-styles.css')
+  body
+    .container
+      .row
+        .col-xs-12
+          .method-templete
+            .list-group
+              each item in services
+                a.list-group-item(href=item.apiURLPage)
+                  if item.secure
+                    span.badge secure
+                  h4.list-group-item-heading #{item.title}
+                    span.label.label-success #{item.method}
+                    span.label.label-primary #{item.url}
+                  p.list-group-item-text #{item.desc}
+    script(src='https://code.jquery.com/jquery.js')
+    script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js')

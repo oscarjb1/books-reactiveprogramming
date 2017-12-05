@@ -122,8 +122,7 @@ class Signup extends React.Component{
               placeholder="@usuario" name="username" id="username"
               onBlur={this.validateUser.bind(this)}
               onChange={this.handleInput.bind(this)}/>
-            <If condition={!this.props.state.userOk
-              && this.props.state.userOkMessage !== null}>
+            <If condition={this.props.state.userOkMessage !== null}>
               <label ref="usernameLabel" id="usernameLabel"
                 className={this.props.state.userOk ? 'fadeIn animated ok' :
                 'fadeIn animated fail'} htmlFor="username">

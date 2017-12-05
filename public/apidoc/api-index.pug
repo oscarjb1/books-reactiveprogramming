@@ -1,0 +1,53 @@
+doctype html
+html
+  head
+    link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet')
+    link(
+      rel='stylesheet'
+      href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+      integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u'
+      crossorigin='anonymous'
+    )
+    link(rel='stylesheet', href='/public/apidoc/api-styles.css')
+  body
+    .api-alert
+      p.title Mini Twitter API REST
+      p.body
+        | Esta API es provista como parte de la aplicación Mini Twitter,
+        | la cual es parte del libro
+        a(href='#')
+          strong "Desarrollo de aplicaciones reactivas con React, NodeJS y MongoDB"
+        | , por lo que su uso es únicamente con fines educativos y por
+        | ningún motivo deberá ser empleada para aplicaciones productivas.
+      .footer
+        button.btn.btn-warning(data-toggle='modal', data-target='#myModal')
+          | Terminos de uso
+        a.btn.btn-primary(href='/catalog') Ver documentación
+
+    #myModal.modal.fade(
+      tabindex='-1', role='dialog', aria-labelledby='myModalLabel',
+      aria-hidden='true')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal',
+              aria-hidden='true') ×
+            h4#myModalLabel.modal-title Terminos de uso
+          .modal-body
+            p El API de Mini Twitter es provista por Oscar Blancarte, autor del libro
+              strong "Desarrollo de aplicaciones reactivas con React, NodeJs y MongoDB"
+              |  con fines exclusivamente educativos.
+            p Esta API es provista
+              strong "tal cual"
+              |  esta, y el autor se deslizanda de cualquier problema o falla
+              | resultante de su uso. En ningún momento el autor será responsable
+              | por ningún daño directo o indirecto por la pérdida o publicación
+              | de información sensible.
+            strong El usuario es el único responsable por el uso y la información
+              | que este pública.
+          .modal-footer
+            button.btn.btn-primary(type='button', data-dismiss='modal') Cerrar
+
+
+    script(src='https://code.jquery.com/jquery.js')
+    script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js')
