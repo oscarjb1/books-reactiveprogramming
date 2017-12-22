@@ -81,7 +81,6 @@ class Login extends React.Component{
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
               <strong>test/test</strong></p>
             <p>¿No tienes una cuenta? <Link to="/signup">Registrate</Link> </p>
-            <p>¿No tienes una cuenta? Registrate</p>
           </form>
         </div>
       </div>

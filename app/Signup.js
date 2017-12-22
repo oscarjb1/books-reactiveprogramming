@@ -133,7 +133,6 @@ class Signup extends React.Component{
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
               <strong>test/test</strong></p>
             <p>¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link> </p>
-            <p>¿Ya tienes cuenta? Iniciar sesión</p>
           </form>
         </div>
       </div>
