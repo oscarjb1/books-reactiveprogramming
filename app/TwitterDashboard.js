@@ -1,5 +1,5 @@
 import React from 'react'
-import Profile from './profile'
+import Profile from './Profile'
 import TweetsContainer from './TweetsContainer'
 import SuggestedUser from './SuggestedUser'
 import PropTypes from 'prop-types'
