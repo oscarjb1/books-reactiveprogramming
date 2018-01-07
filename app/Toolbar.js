@@ -7,7 +7,6 @@ import { logout } from './actions/Actions'
 class Toolbar extends React.Component{
   constructor(props){
     super(props)
-    // this.state= {}
   }
 
   logout(e){
@@ -69,10 +68,6 @@ class Toolbar extends React.Component{
     )
   }
 }
-
-// Toolbar.propTypes = {
-//   profile: PropTypes.object
-// }
 
 const mapStateToProps = (state) => {
   return {

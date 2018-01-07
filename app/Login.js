@@ -9,49 +9,15 @@ class Login extends React.Component{
 
   constructor(){
     super(...arguments)
-    // this.state = {
-    //   username: "",
-    //   password: ""
-    // }
   }
 
   handleInput(e){
     this.props.updateLoginForm(e.target.name, e.target.value)
-
-    // let field = e.target.name
-    // let value = e.target.value
-    //
-    //
-    // if(field === 'username'){
-    //   value = value.replace(' ','').replace('@','').substring(0, 15)
-    //   this.setState(update(this.state,{
-    //     [field] : {$set: value}
-    //   }))
-    // }
-    //
-    // this.setState(update(this.state,{
-    //   [field] : {$set: value}
-    // }))
   }
 
   login(e){
     e.preventDefault()
     this.props.loginRequest()
-
-    // let request = {
-    // 	"username": this.state.username,
-    // 	"password": this.state.password
-    // }
-    //
-    // APIInvoker.invokePOST('/login',request, response => {
-    //   window.localStorage.setItem("token", response.token)
-    //   window.localStorage.setItem("username", response.profile.userName)
-    //   window.location = '/'
-    // },error => {
-    //   this.refs.submitBtnLabel.innerHTML = error.message
-    //   this.refs.submitBtnLabel.className = 'shake animated'
-    //   console.log("Error en la autenticación")
-    // })
   }
 
   render(){
@@ -84,9 +50,9 @@ class Login extends React.Component{
             <If condition={this.props.state.loginError}>
               <label id="submitBtnLabel" htmlFor="submitBtn" className="shake animated">{this.props.state.loginMessage}</label>
             </If>
-            
+
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
-              <strong>test/test</strong></p>
+              <strong>test/1234</strong></p>
             <p>¿No tienes una cuenta? <Link to="/signup">Registrate</Link> </p>
           </form>
         </div>

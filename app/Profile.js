@@ -1,13 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router'
-// import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 class Profile extends React.Component{
 
   constructor(props){
     super(props)
-    // this.state = {}
   }
 
 
@@ -64,10 +62,6 @@ class Profile extends React.Component{
     )
   }
 }
-
-// Profile.propTypes = {
-//   profile: PropTypes.object.isRequired
-// }
 
 const mapStateToProps = (state) => {
   return {

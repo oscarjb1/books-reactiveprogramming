@@ -15,7 +15,6 @@ class Tweet extends React.Component{
 
   constructor(props){
     super(props)
-    // this.state = props.tweet
   }
 
   handleLike(e){
@@ -27,21 +26,6 @@ class Tweet extends React.Component{
     }else{
       this.props.likeTweet(this.props.tweet._id, !this.props.tweet.liked)
     }
-
-  //   let request = {
-  //     tweetID: this.state._id,
-  //     like: !this.state.liked
-  //   }
-  //
-  //   APIInvoker.invokePOST('/secure/like', request, response => {
-  //     let newState = update(this.state,{
-  //       likeCounter : {$set: response.body.likeCounter},
-  //       liked: {$apply: (x) => {return !x}}
-  //     })
-  //     this.setState(newState)
-  //   },error => {
-  //     console.log("Error al cargar los Tweets", error);
-  //   })
   }
 
   handleReply(e){

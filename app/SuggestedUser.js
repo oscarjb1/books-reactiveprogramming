@@ -8,22 +8,10 @@ class SuggestedUser extends React.Component{
 
   constructor(){
     super(...arguments)
-    // this.state = {
-    //   load: false
-    // }
   }
 
   componentWillMount(){
     this.props.getSuggestedUsers()
-
-    // APIInvoker.invokeGET('/secure/suggestedUsers', response => {
-    //   this.setState({
-    //     load: true,
-    //     users: response.body
-    //   })
-    // },error => {
-    //   console.log("Error al actualizar el perfil", error);
-    // })
   }
 
   render(){

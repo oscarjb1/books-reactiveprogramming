@@ -18,83 +18,24 @@ class UserPage extends React.Component{
 
   constructor(props){
     super(props)
-    // this.state = {
-    //   edit: false,
-    //   profile:{
-    //     name: "",
-    //     description: "",
-    //     avatar: null,
-    //     banner: null,
-    //     userName: ""
-    //   }
-    // }
   }
 
   componentWillMount(){
     let user = this.props.params.user
     this.props.getUserProfile(user)
-
-    // APIInvoker.invokeGET('/profile/' + user, response => {
-    //   this.setState({
-    //     edit:false,
-    //     profile: response.body
-    //   });
-    // },error => {
-    //   console.log("Error al cargar los Tweets");
-    //   window.location = '/'
-    // })
   }
 
   imageSelect(e){
     let id = e.target.id
     this.props.userPageImageUpload(e)
-
-    // e.preventDefault();
-    // let reader = new FileReader();
-    // let file = e.target.files[0];
-    //
-    // if(file.size > 1240000){
-    //   alert('La imagen supera el máximo de 1MB')
-    //   return
-    // }
-    //
-    // reader.onloadend = () => {
-    //   if(id == 'bannerInput'){
-    //     this.setState(update(this.state,{
-    //       profile: {
-    //         banner: {$set: reader.result}
-    //       }
-    //     }))
-    //   }else{
-    //     this.setState(update(this.state,{
-    //       profile: {
-    //         avatar: {$set: reader.result}
-    //       }
-    //     }))
-    //   }
-    // }
-    // reader.readAsDataURL(file)
   }
 
   handleInput(e){
     this.props.updateUserPageForm(e)
-
-    // let id = e.target.id
-    // this.setState(update(this.state,{
-    //   profile: {
-    //     [id]: {$set: e.target.value}
-    //   }
-    // }))
   }
 
   cancelEditMode(e){
     this.props.cancelEditMode()
-
-    // let currentState = this.state.currentState
-    // this.setState(update(this.state,{
-    //   edit: {$set: false},
-    //   profile: {$set: currentState}
-    // }))
   }
 
   changeToEditMode(e){
@@ -104,32 +45,6 @@ class UserPage extends React.Component{
     }else{
       this.props.chageToEditMode()
     }
-
-    // if(this.state.edit){
-    //   let request = {
-    //     username: this.state.profile.userName,
-    //     name: this.state.profile.name,
-    //     description: this.state.profile.description,
-    //     avatar: this.state.profile.avatar,
-    //     banner: this.state.profile.banner
-    //   }
-    //
-    //   APIInvoker.invokePUT('/secure/profile', request, response => {
-    //     if(response.ok){
-    //       this.setState(update(this.state,{
-    //         edit: {$set: false}
-    //       }))
-    //     }
-    //   },error => {
-    //     console.log("Error al actualizar el perfil");
-    //   })
-    // }else{
-    //   let currentState = this.state.profile
-    //   this.setState(update(this.state,{
-    //     edit: {$set: true},
-    //     currentState: {$set: currentState}
-    //   }))
-    // }
   }
 
   follow(e){
@@ -140,23 +55,6 @@ class UserPage extends React.Component{
       }, 5000);
       this.props.followUser(this.props.params.user)
     }
-
-    // this.props.relogin()
-
-    // let request = {
-    //   followingUser: this.props.params.user
-    // }
-    // APIInvoker.invokePOST('/secure/follow', request, response => {
-    //   if(response.ok){
-    //     this.setState(update(this.state,{
-    //       profile:{
-    //         follow: {$set: !response.unfollow}
-    //       }
-    //     }))
-    //   }
-    // },error => {
-    //   console.log("Error al actualizar el perfil");
-    // })
   }
 
   render(){
@@ -166,9 +64,6 @@ class UserPage extends React.Component{
     let bannerStyle = {
       backgroundImage: 'url(' + (profile.banner) + ')'
     }
-
-    // let childs = this.props.children
-    //   && React.cloneElement(this.props.children, { profile: profile })
 
     return(
       <div id="user-page" className="app-container">

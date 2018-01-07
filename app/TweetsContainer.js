@@ -10,9 +10,6 @@ import { getTweet, addNewTweet } from './actions/Actions'
 class TweetsContainer extends React.Component{
   constructor(props){
     super(props)
-    // this.state = {
-    //   tweets: []
-    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -28,45 +25,11 @@ class TweetsContainer extends React.Component{
   componentWillMount(){
     let username = this.props.state.profile.userName
     let onlyUserTweet = this.props.onlyUserTweet
-
-    // this.loadTweets(username, onlyUserTweet)
     this.props.getTweet(username, onlyUserTweet)
   }
 
-  // loadTweets(username, onlyUserTweet){
-  //   let url = '/tweets' + (onlyUserTweet  ? "/" + username : "")
-  //   APIInvoker.invokeGET(url, response => {
-  //     this.setState({
-  //       tweets: response.body
-  //     })
-  //   },error => {
-  //     console.log("Error al cargar los Tweets", error);
-  //   })
-  // }
-
   addNewTweet(newTweet){
     this.props.addNewTweet(newTweet)
-
-    // let oldState = this.state;
-    // let newState = update(this.state, {
-    //   tweets: {$splice: [[0, 0, newTweet]]}
-    // })
-    //
-    // this.setState(newState)
-
-    //Optimistic Update
-    // APIInvoker.invokePOST('/secure/tweet',newTweet,  response => {
-    //   this.setState(update(this.state,{
-    //     tweets:{
-    //       0 : {
-    //         _id: {$set: response.tweet._id}
-    //       }
-    //     }
-    //   }))
-    // },error => {
-    //   console.log("Error al cargar los Tweets");
-    //   this.setState(oldState)
-    // })
   }
 
   render(){
@@ -98,15 +61,11 @@ class TweetsContainer extends React.Component{
 }
 
 TweetsContainer.propTypes = {
-  onlyUserTweet: PropTypes.bool,
-  // profile: PropTypes.object
+  onlyUserTweet: PropTypes.bool
 }
 
 TweetsContainer.defaultProps = {
-  onlyUserTweet: false,
-  // profile: {
-  //   userName: ""
-  // }
+  onlyUserTweet: false
 }
 
 const mapStateToProps = (state) => {

@@ -11,35 +11,19 @@ class Reply extends React.Component{
 
   constructor(props){
     super(props)
-    // this.state={
-    //   focus: false,
-    //   message: '',
-    //   image: null
-    // }
   }
 
   handleChangeMessage(e){
     this.props.updateReplyForm(e.target.name,e.target.value)
-
-    // this.setState(update(this.state,{
-    //   message: {$set: e.target.value}
-    // }))
   }
 
   handleMessageFocus(e){
     this.props.updateReplyForm('focus',true)
-
-    // let newState = update(this.state,{
-    //     focus: {$set: true}
-    // })
-    // this.setState(newState)
   }
 
   handleMessageFocusLost(e){
     if(this.props.state.reply.message.length=== 0){
       this.props.resetReplyForm()
-
-      // this.reset();
     }
   }
 
@@ -53,13 +37,6 @@ class Reply extends React.Component{
   reset(){
     this.props.resetReplyForm()
     this.refs.reply.blur();
-
-    // let newState = update(this.state,{
-    //     focus: {$set: false},
-    //     message: {$set: ''},
-    //     image: {$set:null}
-    // })
-    // this.setState(newState)
   }
 
   newTweet(e){
@@ -82,7 +59,6 @@ class Reply extends React.Component{
     }
 
     this.props.operations.addNewTweet(tweet)
-    // this.reset()
     this.props.resetReplyForm()
   }
 
@@ -96,11 +72,6 @@ class Reply extends React.Component{
     }
 
     reader.onloadend = () => {
-      // let newState = update(this.state,{
-      //   image: {$set: reader.result}
-      // })
-      // this.setState(newState)
-
       this.props.updateReplyForm('image', reader.result)
     }
     reader.readAsDataURL(file)

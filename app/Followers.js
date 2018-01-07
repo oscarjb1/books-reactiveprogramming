@@ -12,39 +12,15 @@ class Followers extends React.Component{
 
   constructor(props){
     super(props)
-    // this.state={
-    //   users: []
-    // }
   }
 
   componentWillMount(){
     this.props.findFollowersFollowings(this.props.params.user,'followers')
-    // this.findUsers(this.props.profile.userName)
   }
 
   componentWillUnmount(){
   this.props.resetFollowersFollowings()
   }
-
-
-  // componentWillReceiveProps(props){
-  //   this.setState({
-  //     tab: props.route.tab,
-  //     users: []
-  //   })
-  //   this.findUsers(props.profile.userName)
-  // }
-
-  // findUsers(username){
-  //   APIInvoker.invokeGET('/followers/' + username, response => {
-  //     this.setState({
-  //       users: response.body
-  //     })
-  //   },error => {
-  //     console.log("Error en la autenticación");
-  //   })
-  //
-  // }
 
   render(){
     return(
