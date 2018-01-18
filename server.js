@@ -49,6 +49,7 @@ function startServer() {
   }
 
   app.use(vhost('api.*', api));
+  app.use(vhost('minitwitterapi.reactiveprogramming.io', api));
 
   app.get('/*', function (req, res) {
       res.sendFile(path.join(__dirname, 'index.html'))
