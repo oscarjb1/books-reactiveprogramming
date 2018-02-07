@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import ListItem from './ListItem'
+import ItemList from './ItemList'
 
 class App extends React.Component{
 
@@ -16,7 +16,7 @@ class App extends React.Component{
     return (
       <ul>
         <For each="item" index='index' of={ items }>
-          <ListItem product={item}  />
+          <ItemList product={item}  />
         </For>
       </ul>
     )
