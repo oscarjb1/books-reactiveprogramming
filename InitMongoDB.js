@@ -3,9 +3,8 @@ var configuration = require('./config')
 var bcrypt = require('bcrypt')
 
 var opts = {
-    server: {
-        socketOptions: {keepAlive: 1}
-    }
+  keepAlive: 1,
+  useNewUrlParser: true
 }
 mongoose.connect(configuration.mongodb.development.connectionString, opts)
 
