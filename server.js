@@ -16,7 +16,6 @@ var https = require('https')
 function startServer() {
 
   var opts = {
-      useMongoClient: true,
       appname: "Mini Twitter",
       poolSize: 10,
       autoIndex: false,
@@ -26,7 +25,8 @@ function startServer() {
       autoReconnect: true,
       loggerLevel: "error", //error / warn / info / debug
       keepAlive: 120,
-      validateOptions: true
+      validateOptions: true,
+      useNewUrlParser: true
   }
 
   let connectString = configuration.mongodb.development.connectionString
