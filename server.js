@@ -11,7 +11,6 @@ var vhost = require('vhost')
 var api = require('./api/api')
 
 var opts = {
-    useMongoClient: true,
     appname: "Mini Twitter",
     poolSize: 10,
     autoIndex: false,
@@ -21,7 +20,8 @@ var opts = {
     autoReconnect: true,
     loggerLevel: "error", //error / warn / info / debug
     keepAlive: 120,
-    validateOptions: true
+    validateOptions: true,
+    useNewUrlParser: true
 }
 
 // let connectString = app.get('env')==='production' ?
