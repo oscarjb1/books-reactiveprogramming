@@ -59,8 +59,8 @@ function startServer() {
     key: fs.readFileSync('./certs/key.pem'),
     cert: fs.readFileSync('./certs/cert.pem'),
     passphrase: '1234'
-  }, app).listen(443, () => {
-    console.log('Example app listening on port 443!')
+  }, app).listen(configuration.server.port, () => {
+    console.log(`Example app listening on port ${configuration.server.port}!`)
   });
 
 
