@@ -5,6 +5,7 @@ var path = require('path')
 var webpack = require('webpack')
 var config = require('./webpack.config')
 var compiler = webpack(config)
+var configuration = require('./config')
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,6 +20,6 @@ app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(8080, function () {
+app.listen(configuration.server.port, function () {
   console.log('Example app listening on port 8080!');
 });
