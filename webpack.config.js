@@ -14,7 +14,7 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query:{
-        presets: ['es2015','react'],
+        presets: ['env','react'],
         plugins: ["jsx-control-statements"]
       }
     }]
