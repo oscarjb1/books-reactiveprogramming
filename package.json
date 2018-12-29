@@ -9,6 +9,7 @@
   "author": "Oscar Blancarte",
   "license": "ISC",
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "webpack": "^2.7.0",
     "webpack-dev-server": "^1.10.*"
@@ -16,7 +17,6 @@
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-preset-es2015": "^6.24.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
   }
