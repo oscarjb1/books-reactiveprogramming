@@ -1,6 +1,6 @@
 var authService = require('../services/AuthService')
 var Profile = require('../models/Profile')
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcryptjs')
 
 var configuration = require('../../config')
 var jwt = require('jsonwebtoken')
