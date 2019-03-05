@@ -1,8 +1,6 @@
 import React from 'react'
-import update from 'react-addons-update'
 import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
-import APIInvoker from './utils/APIInvoker'
 import TweetReply from './TweetReply'
 import { render } from 'react-dom';
 import PropTypes from 'prop-types'

@@ -1,8 +1,6 @@
 import React from 'react'
 import Tweet from './Tweet'
 import Reply  from './Reply'
-import update from 'react-addons-update'
-import APIInvoker from "./utils/APIInvoker"
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getTweet, addNewTweet } from './actions/Actions'
