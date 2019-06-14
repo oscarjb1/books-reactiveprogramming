@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 var configuration = require('./config')
 //var Profile = require('./api/models/Profile')
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcryptjs')
 
 var opts = {
   keepAlive: 1,
