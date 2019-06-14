@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 var configuration = require('./config')
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcryptjs')
 
 var opts = {
   keepAlive: 1,
