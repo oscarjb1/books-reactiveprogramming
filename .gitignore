@@ -6,3 +6,4 @@ app/actions
 app/reducers/dist
 app/utils/dist
 dist
+package-lock.json
