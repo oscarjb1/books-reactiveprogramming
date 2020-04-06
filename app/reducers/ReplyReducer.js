@@ -2,7 +2,7 @@ import {
   UPDATE_REPLY_FORM,
   RESET_REPLY_FORM
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 let initialState = {
   focus: false,

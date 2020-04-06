@@ -1,16 +1,12 @@
 import React from 'react'
-import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getSuggestedUsers } from './actions/Actions'
 
 class SuggestedUser extends React.Component{
 
-  constructor(){
-    super(...arguments)
-  }
-
-  componentWillMount(){
+  constructor(args){
+    super(args)
     this.props.getSuggestedUsers()
   }
 
@@ -26,15 +22,15 @@ class SuggestedUser extends React.Component{
               </div>
               <div className="sg-body">
                 <div>
-                  <a href={"/" + user.userName}>
+                  <Link to={"/" + user.userName}>
                     <span className="sg-name">{user.name}</span>
                     <span className="sg-username">@{user.userName}</span>
-                  </a>
+                  </Link>
                 </div>
-                <a href={"/" + user.userName}
+                <Link to={"/" + user.userName}
                   className="btn btn-primary btn-sm">
                   <i className="fa fa-user-plus" aria-hidden="true"></i>
-                      Ver perfil</a>
+                      Ver perfil</Link>
               </div>
             </div>
           </For>

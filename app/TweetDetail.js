@@ -1,10 +1,7 @@
 import React from 'react'
 import Reply from './Reply'
 import Tweet from './Tweet'
-import APIInvoker from './utils/APIInvoker'
-import update from 'react-addons-update'
-import { browserHistory } from 'react-router'
-import PropTypes from 'prop-types'
+import browserHistory from './History'
 import { loadTweetDetail, addNewTweetReply } from './actions/Actions'
 import { connect } from 'react-redux'
 
@@ -12,18 +9,14 @@ class TweetDetail extends React.Component{
 
   constructor(props){
     super(props)
-  }
-
-  componentWillMount(){
-    let tweet = this.props.params.tweet
+    let tweet = this.props.match.params.tweet
     this.props.loadTweetDetail(tweet)
   }
 
-
-
   addNewTweet(newTweet){
     let oldState = this.state;
-    this.props.addNewTweetReply(newTweet, this.props.params.tweet)
+    let tweet = this.props.match.params.tweet
+    this.props.addNewTweetReply(newTweet, tweet)
   }
 
   componentWillUnmount(){

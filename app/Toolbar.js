@@ -1,15 +1,15 @@
 import React from 'react'
-import { browserHistory,Link } from 'react-router'
+import { browserHistory, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { logout } from './actions/Actions'
 
-class Toolbar extends React.Component{
-  constructor(props){
+class Toolbar extends React.Component {
+  constructor(props) {
     super(props)
   }
 
-  logout(e){
+  logout(e) {
     e.preventDefault()
     window.localStorage.removeItem("token")
     window.localStorage.removeItem("username")
@@ -17,29 +17,33 @@ class Toolbar extends React.Component{
     window.location = '/login';
   }
 
-  render(){
+  render() {
 
-    return(
+    return (
       <nav className="navbar navbar-default navbar-fixed-top">
-        <span className="visible-xs bs-test">XS</span>
-        <span className="visible-sm bs-test">SM</span>
-        <span className="visible-md bs-test">MD</span>
-        <span className="visible-lg bs-test">LG</span>
+        <If condition={process.env.NODE_ENV !== 'production'}>
+          <span className="visible-xs bs-test">XS</span>
+          <span className="visible-sm bs-test">SM</span>
+          <span className="visible-md bs-test">MD</span>
+          <span className="visible-lg bs-test">LG</span>
+        </If>
 
         <div className="container-fluid">
           <div className="container-fluid">
             <div className="navbar-header">
-              <a className="navbar-brand" href="#">
+              <Link className="navbar-brand" to="/">
                 <i className="fa fa-twitter" aria-hidden="true"></i>
-              </a>
+              </Link>
               <ul id="menu">
                 <li id="tbHome" className="selected">
-                  <Link to="/">
-                    <p className="menu-item"><i
-                      className="fa fa-home menu-item-icon" aria-hidden="true">
+                  <If condition={this.props.state.profile != null} >
+                    <Link to="/">
+                      <p className="menu-item"><i
+                        className="fa fa-home menu-item-icon" aria-hidden="true">
                       </i>  <span className="hidden-xs hidden-sm">Inicio</span>
-                    </p>
-                  </Link>
+                      </p>
+                    </Link>
+                  </If>
                 </li>
               </ul>
             </div>
@@ -50,14 +54,17 @@ class Toolbar extends React.Component{
                     role="button" aria-haspopup="true" aria-expanded="false">
                     <img className="navbar-avatar"
                       src={this.props.state.profile.avatar}
-                      alt={this.props.state.profile.userName}/>
+                      alt={this.props.state.profile.userName} />
                   </a>
                   <ul className="dropdown-menu">
-                    <li><a href={"/"+this.props.state.profile.userName}>
-                      Ver perfil</a></li>
+                    <li>
+                      <Link to={"/" + this.props.state.profile.userName}>
+                        Ver perfil</Link>
+                    </li>
                     <li role="separator" className="divider"></li>
-                    <li><a href="#" onClick={this.logout.bind(this)}>
-                      Cerrar sesión</a></li>
+                    <li>
+                      <a href="#" onClick={this.logout.bind(this)}>Cerrar sesión</a>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -77,4 +84,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps,{logout})(Toolbar);
+export default connect(mapStateToProps, { logout })(Toolbar);

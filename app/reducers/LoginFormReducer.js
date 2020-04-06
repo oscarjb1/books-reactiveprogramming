@@ -2,7 +2,7 @@ import {
   UPDATE_LOGIN_FORM_REQUEST,
   LOGIN_ERROR
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 
 const initialState = {

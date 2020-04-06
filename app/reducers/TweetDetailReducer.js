@@ -3,7 +3,7 @@ import {
   ADD_NEW_TWEET_REPLY,
   LIKE_TWEET_DETAIL_REQUEST
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 let initialState = null
 

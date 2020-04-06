@@ -6,7 +6,7 @@ var webpack = require('webpack')
 var config = require('./webpack.config')
 var compiler = webpack(config)
 var mongoose = require('mongoose')
-var configuration = require('./config')
+var configuration = require('./serverConfig')
 var vhost = require('vhost')
 var api = require('./api/api')
 var fs = require('fs')
@@ -20,13 +20,12 @@ function startServer() {
       poolSize: 10,
       autoIndex: false,
       bufferMaxEntries: 0,
-      reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-      reconnectInterval: 500,
-      autoReconnect: true,
       loggerLevel: "error", //error / warn / info / debug
       keepAlive: 120,
       validateOptions: true,
-      useNewUrlParser: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
   }
 
   let connectString = configuration.mongodb.development.connectionString
@@ -60,15 +59,11 @@ function startServer() {
     cert: fs.readFileSync('./certs/cert.pem'),
     passphrase: '1234'
   }, app).listen(configuration.server.port, () => {
-    console.log(`Example app listening on port ${configuration.server.port}!`)
+    console.log(`Example app listening on port ${configuration.server.securePort}!`)
   });
 
 
-  http.createServer(function (req, res) {
-    res.writeHead(301, {
-      "Location": "https://" + req.headers['host'] + req.url })
-    res.end()
-  }).listen(80);
+  http.createServer(app).listen(configuration.server.insecurePort);
 }
 
 if(require.main === module){

@@ -1,2 +1,8 @@
 node_modules/
 public/bundle.js
+api/services/dist
+api/controllers/dist
+app/actions
+app/reducers/dist
+app/utils/dist
+dist

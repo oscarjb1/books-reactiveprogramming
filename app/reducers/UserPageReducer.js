@@ -8,7 +8,7 @@ import {
   USER_PAGE_SAVE_CHANGES,
   USER_PAGE_FOLLOW_USER
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 const initialState = {
   edit: false,

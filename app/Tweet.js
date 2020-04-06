@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router'
-import { browserHistory } from 'react-router'
+import { Link } from 'react-router-dom'
+import browserHistory from './History'
 import TweetReply from './TweetReply'
 import { render } from 'react-dom';
 import PropTypes from 'prop-types'
@@ -58,17 +58,17 @@ class Tweet extends React.Component{
     }
 
     return (
-        <article  className={tweetClass} onClick={this.props.detail ? '' :
+        <article  className={tweetClass} onClick={this.props.detail ? null :
             this.handleClick.bind(this)}
             id={"tweet-" + this.props.tweet._id}>
           <img src={this.props.tweet._creator.avatar}
             className="tweet-avatar" />
           <div className="tweet-body">
             <div className="tweet-user">
-              <Link to={"/" + this.props.tweet._creator.userName} >
+              <a href={"/" + this.props.tweet._creator.userName} >
                 <span  className="tweet-name" data-ignore-onclick>
                   {this.props.tweet._creator.name}</span>
-              </Link>
+              </a>
               <span className="tweet-username">
                 @{this.props.tweet._creator.userName}</span>
             </div>

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var configuration = require('./config')
+var configuration = require('./serverConfig')
 const connectString = configuration.mongodb.development.connectionString
 
 var opts = {

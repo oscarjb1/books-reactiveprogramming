@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var configuration = require('./config')
+var configuration = require('./serverConfig')
 //var Profile = require('./api/models/Profile')
 var bcrypt = require('bcryptjs')
 

@@ -10,10 +10,8 @@ class Followings extends React.Component{
 
   constructor(props){
     super(props)
-  }
-
-  componentWillMount(){
-    this.props.findFollowersFollowings(this.props.params.user,'followings')
+    let user = this.props.match.params.user
+    this.props.findFollowersFollowings(user,'followings')
   }
 
   componentWillUnmount(){
@@ -21,8 +19,9 @@ class Followings extends React.Component{
   }
 
   render(){
+    let tab = this.props.match.params.tab
     return(
-      <section>
+      <section >
         <div className="container-fluid no-padding">
           <div className="row no-padding">
             <CSSTransitionGroup
@@ -35,7 +34,7 @@ class Followings extends React.Component{
               transitionLeaveTimeout={0}>
               <For each="user" of={ this.props.state.users }>
                 <div className="col-xs-12 col-sm-6 col-lg-4"
-                  key={this.props.route.tab + "-" + user._id}>
+                  key={tab + "-" + user._id}>
                   <UserCard user={user} />
                 </div>
               </For>

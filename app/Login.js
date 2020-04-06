@@ -1,29 +1,30 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {updateLoginForm, loginRequest} from './actions/Actions'
+import { updateLoginForm, loginRequest } from './actions/Actions'
+import Toolbar from './Toolbar'
 
-class Login extends React.Component{
+class Login extends React.Component {
 
-  constructor(){
+  constructor() {
     super(...arguments)
   }
 
-  handleInput(e){
+  handleInput(e) {
     this.props.updateLoginForm(e.target.name, e.target.value)
   }
 
-  login(e){
+  login(e) {
     e.preventDefault()
     this.props.loginRequest()
   }
 
-  render(){
+  render() {
 
-    return(
-      <div id="signup">
+    return (
+      <div id="signup" className="animated fadeIn">
         <div className="container" >
           <div className="row">
             <div className="col-xs-12">
@@ -36,14 +37,14 @@ class Login extends React.Component{
 
             <input type="text" value={this.props.state.username}
               placeholder="usuario" name="username" id="username"
-              onChange={this.handleInput.bind(this)}/>
+              onChange={this.handleInput.bind(this)} />
             <label ref="usernameLabel" id="usernameLabel"
               htmlFor="username"></label>
 
             <input type="password" id="passwordLabel"
               value={this.props.state.password} placeholder="Contraseña"
-              name="password" onChange={this.handleInput.bind(this)}/>
-            <label ref="passwordLabel"  htmlFor="passwordLabel"></label>
+              name="password" onChange={this.handleInput.bind(this)} />
+            <label ref="passwordLabel" htmlFor="passwordLabel"></label>
 
             <button className="btn btn-primary btn-lg " id="submitBtn"
               onClick={this.login.bind(this)}>Regístrate</button>
@@ -62,14 +63,14 @@ class Login extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    return {
-      state: {
-        username: state.loginFormReducer.username,
-        password: state.loginFormReducer.password,
-        loginError: state.loginFormReducer.loginError,
-        loginMessage: state.loginFormReducer.loginMessage
-      }
+  return {
+    state: {
+      username: state.loginFormReducer.username,
+      password: state.loginFormReducer.password,
+      loginError: state.loginFormReducer.loginError,
+      loginMessage: state.loginFormReducer.loginMessage
     }
+  }
 }
 
-export default connect (mapStateToProps, {updateLoginForm, loginRequest})(Login)
+export default connect(mapStateToProps, { updateLoginForm, loginRequest })(Login)

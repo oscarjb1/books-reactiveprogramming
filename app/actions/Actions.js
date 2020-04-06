@@ -26,12 +26,9 @@ import {
   LOAD_TWEET_DETAIL,
   ADD_NEW_TWEET_REPLY
 } from './const'
-
-
 import APIInvoker from '../utils/APIInvoker'
-import { browserHistory } from 'react-router'
-import update from 'react-addons-update'
-
+import browserHistory from '../History'
+import update from 'immutability-helper'
 
 //TwitterApp Component
 export const relogin = () => (dispatch,getState) => {
@@ -155,11 +152,15 @@ const signupResultFail = (signupFailMessage) => ({
 })
 
 //TweesContainer Component
-export const getTweet = (username, onlyUserTweet) =>
+export const getTweet = (username, onlyUserTweet, page) =>
   (dispatch, getState) => {
-  APIInvoker.invokeGET('/tweets' + (onlyUserTweet  ? "/" + username : ""),
+  let currentPage = page || 0
+
+  
+    //'/tweets' + (onlyUserTweet  ? "/" + username : "")
+  APIInvoker.invokeGET( `/tweets${onlyUserTweet  ? "/" + username : ""}?page=${currentPage}` ,
   response => {
-    dispatch(loadTweetsSuccess(response.body))
+    dispatch(loadTweetsSuccess(response.body, currentPage==0))
   },error => {
     console.log("Error al cargar los Tweets")
   })
@@ -178,9 +179,10 @@ export const addNewTweet = (newTweet) => (dispatch, getState) => {
   })
 }
 
-const loadTweetsSuccess = tweets => ({
+const loadTweetsSuccess = (tweets, reset) => ({
   type: LOAD_TWEETS,
-  tweets: tweets
+  tweets: tweets,
+  reset: reset
 })
 
 const addNewTweetSuccess = tweets => ({

@@ -3,7 +3,7 @@ import {
   VALIDATE_USER_RESPONSE,
   SIGNUP_RESULT_FAIL
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 const initialState = {
   username: "",

@@ -1,7 +1,7 @@
 import React from 'react'
 import Reply from './Reply'
 import Tweet from './Tweet'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
 import PropTypes from 'prop-types'
 

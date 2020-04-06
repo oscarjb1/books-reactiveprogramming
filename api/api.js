@@ -4,7 +4,7 @@ var userController = require('../api/controllers/UserController')
 var tweetController = require('../api/controllers/TweetController')
 const pug = require('pug')
 
-var configuration = require('../config')
+var configuration = require('../serverConfig')
 var jwt = require('jsonwebtoken')
 
 const methodCatalog = require('../public/apidoc/meta/catalog.js')
@@ -72,8 +72,10 @@ router.post('/secure/like', tweetController.like)
 
 
 //Public access services
-router.get('/tweets/:user', tweetController.getUserTweets)
+
 router.get('/tweets',tweetController.getNewTweets)
+router.get('/tweets/:user', tweetController.getUserTweets)
+router.get('/tweets/:tweet/images', tweetController.getTweetImage )
 router.get('/usernameValidate/:username', userController.usernameValidate)
 router.get('/profile/:user',userController.getProfileByUsername)
 router.post('/signup', userController.signup)

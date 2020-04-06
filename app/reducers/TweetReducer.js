@@ -1,20 +1,26 @@
 import {
   LOAD_TWEETS,
   ADD_NEW_TWEET_SUCCESS,
-  CLEAR_TWEETS,
-  LIKE_TWEET_REQUEST
+  LIKE_TWEET_REQUEST,
 } from '../actions/const'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 const initialState = {
-  tweets: []
+  tweets: [],
+  hasMore: false
 }
 
-export const  tweetsReducer = (state = initialState, action) => {
+export const tweetsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_TWEETS:
+
+      let newState = action.reset 
+        ? action.tweets
+        : update(state.tweets, { $push: action.tweets })
+
       return {
-        tweets: action.tweets
+        tweets: newState,
+        hasMore: action.tweets.length == 10
       }
     case ADD_NEW_TWEET_SUCCESS:
       return {
@@ -22,12 +28,12 @@ export const  tweetsReducer = (state = initialState, action) => {
       }
     case LIKE_TWEET_REQUEST:
       let targetIndex =
-        state.tweets.map( x => {return x._id}).indexOf(action.tweetId)
+        state.tweets.map(x => { return x._id }).indexOf(action.tweetId)
       return update(state, {
         tweets: {
           [targetIndex]: {
-            likeCounter : {$set: action.likeCounter},
-            liked: {$apply: (x) => {return !x}}
+            likeCounter: { $set: action.likeCounter },
+            liked: { $apply: (x) => { return !x } }
           }
         }
       })

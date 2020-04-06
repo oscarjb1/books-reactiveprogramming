@@ -1,7 +1,5 @@
 import React from 'react'
-import update from 'react-addons-update'
-import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
   getUserProfile,
@@ -11,62 +9,82 @@ import {
   userPageImageUpload,
   userPageSaveChanges,
   followUser,
-  relogin}
-from './actions/Actions'
+  relogin
+} from './actions/Actions'
+import { Route, Switch } from "react-router-dom"
+import Followings from './Followings'
+import Followers from './Followers'
+import TweetDetail from './TweetDetail'
+import MyTweets from './MyTweets'
 
-class UserPage extends React.Component{
+class UserPage extends React.Component {
 
-  constructor(props){
-    super(props)
-  }
-
-  componentWillMount(){
-    let user = this.props.params.user
+  constructor(args) {
+    super(args)
+    let user = this.props.match && this.props.match.params.user
     this.props.getUserProfile(user)
   }
 
-  imageSelect(e){
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let newProfile = this.props.match.params.user
+    let prevProfile = prevProps.match.params.user
+    if (newProfile != prevProfile) {
+      this.props.getUserProfile(newProfile)
+    }
+  }
+
+  imageSelect(e) {
     let id = e.target.id
     this.props.userPageImageUpload(e)
   }
 
-  handleInput(e){
+  handleInput(e) {
     this.props.updateUserPageForm(e)
   }
 
-  cancelEditMode(e){
+  cancelEditMode(e) {
     this.props.cancelEditMode()
   }
 
-  changeToEditMode(e){
-    if(this.props.state.edit){
+  changeToEditMode(e) {
+    if (this.props.state.edit) {
       this.props.userPageSaveChanges()
       this.props.relogin()
-    }else{
+    } else {
       this.props.chageToEditMode()
     }
   }
 
-  follow(e){
-    if(!$('#followBtn').hasClass('disabled')){
+  follow(e) {
+    if (!$('#followBtn').hasClass('disabled')) {
       $('#followBtn').addClass('disabled')
-      setTimeout(function(e){
+      setTimeout(function (e) {
         $('#followBtn').removeClass('disabled')
       }, 5000);
-      this.props.followUser(this.props.params.user)
+      this.props.followUser(this.props.match.params.user)
     }
   }
 
-  render(){
+  render() {
     let profile = this.props.state.profile
+    if (profile == null) return null
+
+
+    if (profile._id == null) {
+      return null
+    }
+
     let storageUserName = window.localStorage.getItem("username")
 
     let bannerStyle = {
       backgroundImage: 'url(' + (profile.banner) + ')'
     }
 
-    return(
-      <div id="user-page" className="app-container">
+    let tab = (this.props.match && this.props.match.params.tab) || 'tweets'
+
+    return (
+      <div id="user-page" className="app-container animated fadeIn" >
         <header className="user-header">
           <div className="user-banner" style={bannerStyle}>
             <If condition={this.props.state.edit}>
@@ -78,7 +96,7 @@ class UserPage extends React.Component{
                 <input href="#" className="btn"
                   accept=".gif,.jpg,.jpeg,.png"
                   type="file" id="bannerInput"
-                  onChange={this.imageSelect.bind(this)}  />
+                  onChange={this.imageSelect.bind(this)} />
               </div>
             </If>
           </div>
@@ -91,23 +109,23 @@ class UserPage extends React.Component{
                 <div className="col-xs-12 col-sm-8 col-md-push-1
                   col-md-7 col-lg-push-1 col-lg-7">
                   <ul className="user-summary-menu">
-                    <li className={this.props.route.tab === 'tweets' ?
-                      'selected':''}>
+                    <li className={tab === 'tweets' ?
+                      'selected' : ''}>
                       <Link to={"/" + profile.userName}>
                         <p className="summary-label">TWEETS</p>
                         <p className="summary-value">{profile.tweetCount}</p>
                       </Link>
                     </li>
-                    <li className={this.props.route.tab === 'followings' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/following" }>
+                    <li className={tab === 'following' ?
+                      'selected' : ''}>
+                      <Link to={"/" + profile.userName + "/following"}>
                         <p className="summary-label">SIGUIENDO</p>
                         <p className="summary-value">{profile.following}</p>
                       </Link>
                     </li>
-                    <li className={this.props.route.tab === 'followers' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/followers" }>
+                    <li className={tab === 'followers' ?
+                      'selected' : ''}>
+                      <Link to={"/" + profile.userName + "/followers"}>
                         <p className="summary-label">SEGUIDORES</p>
                         <p className="summary-value">{profile.followers}</p>
                       </Link>
@@ -134,7 +152,7 @@ class UserPage extends React.Component{
                     </button>
                   </If>
 
-                  <If condition= {this.props.state.edit}>
+                  <If condition={this.props.state.edit}>
                     <button className="btn edit-button" onClick=
                       {this.cancelEditMode.bind(this)} >Cancelar</button>
                   </If>
@@ -163,7 +181,7 @@ class UserPage extends React.Component{
                           className="btn" type="file"
                           accept=".gif,.jpg,.jpeg,.png"
                           onChange={this.imageSelect.bind(this)}
-                           />
+                        />
                       </div>
                     </When>
                     <Otherwise>
@@ -177,9 +195,9 @@ class UserPage extends React.Component{
                   <When condition={this.props.state.edit} >
                     <div className="user-info-edit">
                       <input maxLength="20" type="text" value={profile.name}
-                        onChange={this.handleInput.bind(this)} id="name"/>
+                        onChange={this.handleInput.bind(this)} id="name" />
                       <p className="user-info-username">@{profile.userName}</p>
-                      <textarea  maxLength="180" id="description"
+                      <textarea maxLength="180" id="description"
                         value={profile.description}
                         onChange={this.handleInput.bind(this)} />
                     </div>
@@ -197,7 +215,12 @@ class UserPage extends React.Component{
             </div>
             <div className="col-xs-12 col-sm-8 col-md-7
               col-md-push-1 col-lg-7">
-              {this.props.children}
+              <Switch>
+                <Route exact path="/:user" component={MyTweets} />
+                <Route exact path="/:user/followers" component={Followers} tab="followers" />
+                <Route exact path="/:user/following" component={Followings} tab="followings" />
+                <Route exact path="/:user/:tweet" component={TweetDetail} />
+              </Switch>
             </div>
           </div>
         </div>
@@ -213,4 +236,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps,
-  {getUserProfile, chageToEditMode, cancelEditMode, updateUserPageForm, userPageImageUpload, userPageSaveChanges, followUser, relogin})(UserPage);
+  { getUserProfile, chageToEditMode, cancelEditMode, updateUserPageForm, userPageImageUpload, userPageSaveChanges, followUser, relogin })(UserPage);

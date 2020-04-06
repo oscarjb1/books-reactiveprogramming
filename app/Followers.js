@@ -12,10 +12,8 @@ class Followers extends React.Component{
 
   constructor(props){
     super(props)
-  }
-
-  componentWillMount(){
-    this.props.findFollowersFollowings(this.props.params.user,'followers')
+    let user = this.props.match.params.user
+    this.props.findFollowersFollowings(user,'followers')
   }
 
   componentWillUnmount(){
@@ -23,6 +21,7 @@ class Followers extends React.Component{
   }
 
   render(){
+    let tab = this.props.match.params.tab
     return(
       <section>
         <div className="container-fluid no-padding">
@@ -37,7 +36,7 @@ class Followers extends React.Component{
               transitionLeaveTimeout={0}>
               <For each="user" of={ this.props.state.users }>
                 <div className="col-xs-12 col-sm-6 col-lg-4"
-                  key={this.props.route.tab + "-" + user._id}>
+                  key={tab + "-" + user._id}>
                   <UserCard user={user} />
                 </div>
               </For>

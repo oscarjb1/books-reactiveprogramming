@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken')
-var configuration = require('../../config')
+var configuration = require('../../serverConfig')
 
-function generateToken(user) {
+const generateToken = (user) => {
   var u = {
    username: user.username,
    id: user.id
