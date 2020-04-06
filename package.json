@@ -9,15 +9,27 @@
   "author": "Oscar Blancarte",
   "license": "ISC",
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "webpack": "^2.7.0",
-    "webpack-dev-server": "^1.10.*"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-export-default-from": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.2.6",
+    "babel-loader": "^8.1.0",
+    "react-hot-loader": "^4.12.20",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "core-js": "^3.6.4",
+    "cors": "^2.8.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2"
   }
 }
