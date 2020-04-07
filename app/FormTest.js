@@ -1,5 +1,5 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 
 class FormTest extends React.Component{
 

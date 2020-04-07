@@ -1,7 +1,6 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-// import { browserHistory,Link } from 'react-router'
 
 class Signup extends React.Component{
 
@@ -44,15 +43,15 @@ class Signup extends React.Component{
       this.setState(update(this.state, {
         userOk: {$set: true}
       }))
-      this.refs.usernameLabel.innerHTML = response.message
-      this.refs.usernameLabel.className = 'fadeIn animated ok'
+      this.usernameLabel.innerHTML = response.message
+      this.usernameLabel.className = 'fadeIn animated ok'
     },error => {
       console.log("Error al cargar los Tweets");
       this.setState(update(this.state,{
         userOk: {$set: false}
       }))
-      this.refs.usernameLabel.innerHTML = error.message
-      this.refs.usernameLabel.className = 'fadeIn animated fail'
+      this.usernameLabel.innerHTML = error.message
+      this.usernameLabel.className = 'fadeIn animated fail'
     })
   }
 
@@ -61,19 +60,19 @@ class Signup extends React.Component{
     e.preventDefault()
 
     if(!this.state.license){
-      this.refs.submitBtnLabel.innerHTML =
+      this.submitBtnLabel.innerHTML =
         'Acepte los términos de licencia'
-      this.refs.submitBtnLabel.className = 'shake animated'
+      this.submitBtnLabel.className = 'shake animated'
       return
     }else if(!this.state.userOk){
-      this.refs.submitBtnLabel.innerHTML =
+      this.submitBtnLabel.innerHTML =
         'Favor de revisar su nombre de usuario'
-      this.refs.submitBtnLabel.className = ''
+      this.submitBtnLabel.className = ''
       return
     }
 
-    this.refs.submitBtnLabel.innerHTML = ''
-    this.refs.submitBtnLabel.className = ''
+    this.submitBtnLabel.innerHTML = ''
+    this.submitBtnLabel.className = ''
 
     let request = {
     	"name": this.state.name,
@@ -82,12 +81,11 @@ class Signup extends React.Component{
     }
 
     APIInvoker.invokePOST('/signup',request, response => {
-      // browserHistory.push('/login');
       alert('Usuario registrado correctamente');
     },error => {
       console.log("Error al cargar los Tweets");
-      this.refs.submitBtnLabel.innerHTML = response.error
-      this.refs.submitBtnLabel.className = 'shake animated'
+      this.submitBtnLabel.innerHTML = error.error
+      this.submitBtnLabel.className = 'shake animated'
     })
   }
 
@@ -109,30 +107,33 @@ class Signup extends React.Component{
               placeholder="@usuario" name="username" id="username"
               onBlur={this.validateUser.bind(this)}
               onChange={this.handleInput.bind(this)}/>
-            <label ref="usernameLabel" id="usernameLabel"
+            <label ref={self => this.usernameLabel = self} id="usernameLabel"
               htmlFor="username"></label>
 
             <input type="text" value={this.state.name} placeholder="Nombre"
               name="name" id="name" onChange={this.handleInput.bind(this)}/>
-            <label ref="nameLabel" id="nameLabel" htmlFor="name"></label>
+            <label id="nameLabel" htmlFor="name"
+              ref={self => this.nameLabel = self}></label>
 
             <input type="password" id="passwordLabel"
               value={this.state.password} placeholder="Contraseña"
               name="password" onChange={this.handleInput.bind(this)}/>
-            <label ref="passwordLabel"  htmlFor="passwordLabel"></label>
+            <label ref={self => this.passwordLabel = self}  
+              htmlFor="passwordLabel"></label>
 
-            <input id="license" type="checkbox" ref="license"
+            <input id="license" type="checkbox" 
+              ref={self => this.license = self }
               value={this.state.license} name="license"
               onChange={this.handleInput.bind(this)} />
-            <label htmlFor="license" >Acepto los terminos de licencia</label>
+            <label htmlFor="license" > Acepto los terminos de licencia</label>
 
             <button className="btn btn-primary btn-lg " id="submitBtn"
               onClick={this.signup.bind(this)}>Regístrate</button>
-            <label ref="submitBtnLabel" id="submitBtnLabel" htmlFor="submitBtn"
+            <label id="submitBtnLabel" htmlFor="submitBtn"
+              ref={self => this.submitBtnLabel = self} 
               className="shake animated hidden "></label>
-            <p className="bg-danger user-test">Crea un usuario o usa el usuario
+            <p className="bg-danger user-test">Crea un usuario o usa el usuario 
               <strong>test/test</strong></p>
-            {/* <p>¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link> </p> */}
             <p>¿Ya tienes cuenta? Iniciar sesión</p>
           </form>
         </div>

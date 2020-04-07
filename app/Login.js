@@ -1,7 +1,6 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-// import { Link } from 'react-router';
 
 class Login extends React.Component{
 
@@ -16,7 +15,6 @@ class Login extends React.Component{
   handleInput(e){
     let field = e.target.name
     let value = e.target.value
-
 
     if(field === 'username'){
       value = value.replace(' ','').replace('@','').substring(0, 15)
@@ -43,8 +41,8 @@ class Login extends React.Component{
       window.localStorage.setItem("username", response.profile.userName)
       window.location = '/'
     },error => {
-      this.refs.submitBtnLabel.innerHTML = error.message
-      this.refs.submitBtnLabel.className = 'shake animated'
+      this.submitBtnLabel.innerHTML = error.message
+      this.submitBtnLabel.className = 'shake animated'
       console.log("Error en la autenticación")
     })
   }
@@ -66,21 +64,20 @@ class Login extends React.Component{
             <input type="text" value={this.state.username}
               placeholder="usuario" name="username" id="username"
               onChange={this.handleInput.bind(this)}/>
-            <label ref="usernameLabel" id="usernameLabel"
+            <label ref={self => this.usernameLabel = self} id="usernameLabel"
               htmlFor="username"></label>
 
             <input type="password" id="passwordLabel"
               value={this.state.password} placeholder="Contraseña"
               name="password" onChange={this.handleInput.bind(this)}/>
-            <label ref="passwordLabel"  htmlFor="passwordLabel"></label>
+            <label ref={self => this.passwordLabel = self}  htmlFor="passwordLabel"></label>
 
             <button className="btn btn-primary btn-lg " id="submitBtn"
               onClick={this.login.bind(this)}>Regístrate</button>
-            <label ref="submitBtnLabel" id="submitBtnLabel" htmlFor="submitBtn"
+            <label ref={self => this.submitBtnLabel = self} id="submitBtnLabel" htmlFor="submitBtn"
               className="shake animated hidden "></label>
-            <p className="bg-danger user-test">Crea un usuario o usa el usuario
+            <p className="bg-danger user-test">Crea un usuario o usa el usuario 
               <strong>test/test</strong></p>
-            {/* <p>¿No tienes una cuenta? <Link to="/signup">Registrate</Link> </p> */}
             <p>¿No tienes una cuenta? Registrate</p>
           </form>
         </div>
