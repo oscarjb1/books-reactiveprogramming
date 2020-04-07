@@ -12,12 +12,12 @@ class EmployeeForm extends React.Component{
   }
 
   componentDidMount(){
-    this.refs.firstName.focus();
+    this.firstName.focus()
   }
 
   handleChanges(e){
     let newState = Object.assign(
-      this.state, {[e.target.id]: e.target.value})
+    this.state, {[e.target.id]: e.target.value})
     this.setState(newState)
   }
 
@@ -29,7 +29,7 @@ class EmployeeForm extends React.Component{
     return (
       <form>
         <label htmlFor='firstName'>Nombre</label>
-        <input ref='firstName' id='firstName'
+        <input ref={self => this.firstName = self} id='firstName'
           type='text' value={this.state.firstName}
           onChange={this.handleChanges.bind(this)}/>
         <br/>
