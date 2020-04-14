@@ -1,7 +1,6 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-// import { Link } from 'react-router';
 
 class Login extends React.Component{
 
