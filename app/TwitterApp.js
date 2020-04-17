@@ -1,29 +1,32 @@
 import React from 'react'
 import APIInvoker from "./utils/APIInvoker"
-import Toolbar from './Toolbar'
-import { browserHistory } from 'react-router'
-import TwitterDashboard from './TwitterDashboard'
+import browserHistory from './History'
+import { Route, Switch } from "react-router-dom";
+import Signup from './Signup'
 import Login from './Login'
+import UserPage from './UserPage'
+import TwitterDashboard from './TwitterDashboard'
+import Toolbar from './Toolbar';
 
-class TwitterApp extends React.Component{
+class TwitterApp extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      load: true,
+      load: false,
       profile: null
     }
   }
 
-  componentWillMount(){
+  componentDidMount() {
     let token = window.localStorage.getItem("token")
-    if(token == null){
-      browserHistory.push('/login')
+    if (token == null) {
       this.setState({
         load: true,
         profile: null
       })
-    }else{
+      browserHistory.push('/login')
+    } else {
       APIInvoker.invokeGET('/secure/relogin', response => {
         this.setState({
           load: true,
@@ -31,8 +34,8 @@ class TwitterApp extends React.Component{
         });
         window.localStorage.setItem("token", response.token)
         window.localStorage.setItem("username", response.profile.userName)
-      },error => {
-        console.log("Error al autenticar al autenticar al usuario " );
+      }, error => {
+        console.log("Error al autenticar al autenticar al usuario ");
         window.localStorage.removeItem("token")
         window.localStorage.removeItem("username")
         browserHistory.push('/login');
@@ -40,26 +43,25 @@ class TwitterApp extends React.Component{
     }
   }
 
-  render(){
+  render() {
+    if (!this.state.load) {
+      return null
+    }
+
     return (
-      <div id="mainApp">
+      <>
         <Toolbar profile={this.state.profile} />
-        <Choose>
-          <When condition={!this.state.load}>
-            <div className="tweet-detail">
-              <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-            </div>
-          </When>
-          <When condition={this.props.children == null
-            && this.state.profile != null}>
-            <TwitterDashboard  profile={this.state.profile}/>
-          </When>
-          <Otherwise>
-            {this.props.children}
-          </Otherwise>
-        </Choose>
-        <div id="dialog"/>
-      </div>
+        <div id="mainApp" className="aminate fadeIn">
+          <Switch>
+            <Route exact path="/" component={() =>
+              <TwitterDashboard profile={this.state.profile} />} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/:user" component={UserPage} />
+          </Switch>
+          <div id="dialog" />
+        </div>
+      </>
     )
   }
 }

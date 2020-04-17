@@ -1,5 +1,5 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import config from '../config.js'
 import PropTypes from 'prop-types'
 
@@ -50,7 +50,7 @@ class Reply extends React.Component{
     })
     this.setState(newState)
 
-    this.refs.reply.blur();
+    this.reply.blur();
   }
 
   newTweet(e){
@@ -104,7 +104,7 @@ class Reply extends React.Component{
         </If>
         <div className="reply-body">
           <textarea
-            ref="reply"
+            ref={self => this.reply = self}
             name="message"
             type="text"
             maxLength = {config.tweets.maxTweetSize}

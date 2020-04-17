@@ -79,6 +79,10 @@ img {
   color: #999;
 }
 
+.tweet .tweet-message {
+  word-wrap: break-word;
+}
+
 .tweet.detail .tweet-body .tweet-user{
   margin-left: 70px;
 }
@@ -227,6 +231,11 @@ img {
   border: 1px solid #e6ecf0;
   border-radius: 5px;
   line-height: inherit;
+}
+
+.twitter-panel .no-tweets{
+  padding: 20px 10px 10px;
+  text-align: center;
 }
 
 #suggestedUsers,
@@ -713,6 +722,7 @@ input[type="file"]{
   padding: 15px 15px 0px;
   display: inline-block;
   position: relative;
+  text-decoration: none;
 }
 
 #user-page .user-header .user-summary .user-summary-menu li a::before{
@@ -733,7 +743,7 @@ input[type="file"]{
   height: 5px;
 }
 
-#user-page .user-header .user-summary .user-summary-menu li.selected a::before{
+#user-page .user-header .user-summary .user-summary-menu li a.selected::before{
   display: block;
   height: 5px;
 }

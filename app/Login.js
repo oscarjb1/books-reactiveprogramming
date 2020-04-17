@@ -1,7 +1,7 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 class Login extends React.Component{
 
@@ -76,8 +76,8 @@ class Login extends React.Component{
 
             <button className="btn btn-primary btn-lg " id="submitBtn"
               onClick={this.login.bind(this)}>Regístrate</button>
-            <label ref="submitBtnLabel" id="submitBtnLabel" htmlFor="submitBtn"
-              className="shake animated hidden "></label>
+            <label ref="submitBtnLabel" id="submitBtnLabel" 
+              htmlFor="submitBtn"className="shake animated hidden "></label>
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
               <strong>test/test</strong></p>
             <p>¿No tienes una cuenta? <Link to="/signup">Registrate</Link> </p>

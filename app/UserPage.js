@@ -1,15 +1,17 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
+import { NavLink } from 'react-router-dom'
+import MyTweets from './MyTweets'
+import { Route } from 'react-router-dom'
 
-class UserPage extends React.Component{
+class UserPage extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       edit: false,
-      profile:{
+      profile: {
         name: "",
         description: "",
         avatar: null,
@@ -19,67 +21,50 @@ class UserPage extends React.Component{
     }
   }
 
-  componentWillMount(){
-    let user = this.props.params.user
+  componentDidMount() {
+    let user = this.props.match && this.props.match.params.user
+    this.getUserProfile(user)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let newProfile = this.props.match.params.user
+    let prevProfile = prevProps.match.params.user
+    if (newProfile != prevProfile) {
+      this.getUserProfile(newProfile)
+    }
+  }
+
+  getUserProfile(user) {
     APIInvoker.invokeGET('/profile/' + user, response => {
       this.setState({
-        edit:false,
+        edit: false,
         profile: response.body
       });
-    },error => {
+    }, error => {
       console.log("Error al cargar los Tweets");
       window.location = '/'
     })
   }
 
-  imageSelect(e){
-    let id = e.target.id
-    e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-
-    if(file.size > 1240000){
-      alert('La imagen supera el máximo de 1MB')
-      return
+  follow(e) {
+    let request = {
+      followingUser: this.props.match.params.user
     }
-
-    reader.onloadend = () => {
-      if(id == 'bannerInput'){
-        this.setState(update(this.state,{
+    APIInvoker.invokePOST('/secure/follow', request, response => {
+      if (response.ok) {
+        this.setState(update(this.state, {
           profile: {
-            banner: {$set: reader.result}
-          }
-        }))
-      }else{
-        this.setState(update(this.state,{
-          profile: {
-            avatar: {$set: reader.result}
+            follow: { $set: !response.unfollow }
           }
         }))
       }
-    }
-    reader.readAsDataURL(file)
+    }, error => {
+      console.log("Error al actualizar el perfil");
+    })
   }
 
-  handleInput(e){
-    let id = e.target.id
-    this.setState(update(this.state,{
-      profile: {
-        [id]: {$set: e.target.value}
-      }
-    }))
-  }
-
-  cancelEditMode(e){
-    let currentState = this.state.currentState
-    this.setState(update(this.state,{
-      edit: {$set: false},
-      profile: {$set: currentState}
-    }))
-  }
-
-  changeToEditMode(e){
-    if(this.state.edit){
+  changeToEditMode(e) {
+    if (this.state.edit) {
       let request = {
         username: this.state.profile.userName,
         name: this.state.profile.name,
@@ -89,41 +74,70 @@ class UserPage extends React.Component{
       }
 
       APIInvoker.invokePUT('/secure/profile', request, response => {
-        if(response.ok){
-          this.setState(update(this.state,{
-            edit: {$set: false}
+        if (response.ok) {
+          this.setState(update(this.state, {
+            edit: { $set: false }
           }))
         }
-      },error => {
+      }, error => {
         console.log("Error al actualizar el perfil");
       })
-    }else{
+    } else {
       let currentState = this.state.profile
-      this.setState(update(this.state,{
-        edit: {$set: true},
-        currentState: {$set: currentState}
+      this.setState(update(this.state, {
+        edit: { $set: true },
+        currentState: { $set: currentState }
       }))
     }
   }
 
-  follow(e){
-    let request = {
-      followingUser: this.props.params.user
+  imageSelect(e) {
+    let id = e.target.id
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    if (file.size > 1240000) {
+      alert('La imagen supera el máximo de 1MB')
+      return
     }
-    APIInvoker.invokePOST('/secure/follow', request, response => {
-      if(response.ok){
-        this.setState(update(this.state,{
-          profile:{
-            follow: {$set: !response.unfollow}
+
+    reader.onloadend = () => {
+      if (id == 'bannerInput') {
+        this.setState(update(this.state, {
+          profile: {
+            banner: { $set: reader.result }
+          }
+        }))
+      } else {
+        this.setState(update(this.state, {
+          profile: {
+            avatar: { $set: reader.result }
           }
         }))
       }
-    },error => {
-      console.log("Error al actualizar el perfil");
-    })
+    }
+    reader.readAsDataURL(file)
   }
 
-  render(){
+  handleInput(e) {
+    let id = e.target.id
+    this.setState(update(this.state, {
+      profile: {
+        [id]: { $set: e.target.value }
+      }
+    }))
+  }
+
+  cancelEditMode(e) {
+    let currentState = this.state.currentState
+    this.setState(update(this.state, {
+      edit: { $set: false },
+      profile: { $set: currentState }
+    }))
+  }
+
+  render() {
     let profile = this.state.profile
     let storageUserName = window.localStorage.getItem("username")
 
@@ -131,10 +145,7 @@ class UserPage extends React.Component{
       backgroundImage: 'url(' + (profile.banner) + ')'
     }
 
-    let childs = this.props.children
-      && React.cloneElement(this.props.children, { profile: profile })
-
-    return(
+    return (
       <div id="user-page" className="app-container">
         <header className="user-header">
           <div className="user-banner" style={bannerStyle}>
@@ -147,7 +158,7 @@ class UserPage extends React.Component{
                 <input href="#" className="btn"
                   accept=".gif,.jpg,.jpeg,.png"
                   type="file" id="bannerInput"
-                  onChange={this.imageSelect.bind(this)}  />
+                  onChange={this.imageSelect.bind(this)} />
               </div>
             </If>
           </div>
@@ -160,26 +171,26 @@ class UserPage extends React.Component{
                 <div className="col-xs-12 col-sm-8 col-md-push-1
                   col-md-7 col-lg-push-1 col-lg-7">
                   <ul className="user-summary-menu">
-                    <li className={this.props.route.tab === 'tweets' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName}>
+                    <li>
+                      <NavLink to={`/${profile.userName}`}
+                        activeClassName="selected">
                         <p className="summary-label">TWEETS</p>
                         <p className="summary-value">{profile.tweetCount}</p>
-                      </Link>
+                      </NavLink>
                     </li>
-                    <li className={this.props.route.tab === 'followings' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/following" }>
+                    <li>
+                      <NavLink to={`/${profile.userName}/following`}
+                        activeClassName="selected">
                         <p className="summary-label">SIGUIENDO</p>
                         <p className="summary-value">{profile.following}</p>
-                      </Link>
+                      </NavLink>
                     </li>
-                    <li className={this.props.route.tab === 'followers' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/followers" }>
+                    <li>
+                      <NavLink to={`/${profile.userName}/followers`}
+                        activeClassName="selected">
                         <p className="summary-label">SEGUIDORES</p>
                         <p className="summary-value">{profile.followers}</p>
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
 
@@ -188,6 +199,7 @@ class UserPage extends React.Component{
                       onClick={this.changeToEditMode.bind(this)}  >
                       {this.state.edit ? "Guardar" : "Editar perfil"}</button>
                   </If>
+
 
                   <If condition={profile.follow != null &&
                     profile.userName !== storageUserName} >
@@ -202,7 +214,7 @@ class UserPage extends React.Component{
                     </button>
                   </If>
 
-                  <If condition= {this.state.edit}>
+                  <If condition={this.state.edit}>
                     <button className="btn edit-button" onClick=
                       {this.cancelEditMode.bind(this)} >Cancelar</button>
                   </If>
@@ -231,7 +243,7 @@ class UserPage extends React.Component{
                           className="btn" type="file"
                           accept=".gif,.jpg,.jpeg,.png"
                           onChange={this.imageSelect.bind(this)}
-                           />
+                        />
                       </div>
                     </When>
                     <Otherwise>
@@ -245,9 +257,9 @@ class UserPage extends React.Component{
                   <When condition={this.state.edit} >
                     <div className="user-info-edit">
                       <input maxLength="20" type="text" value={profile.name}
-                        onChange={this.handleInput.bind(this)} id="name"/>
+                        onChange={this.handleInput.bind(this)} id="name" />
                       <p className="user-info-username">@{profile.userName}</p>
-                      <textarea  maxLength="180" id="description"
+                      <textarea maxLength="180" id="description"
                         value={profile.description}
                         onChange={this.handleInput.bind(this)} />
                     </div>
@@ -265,7 +277,7 @@ class UserPage extends React.Component{
             </div>
             <div className="col-xs-12 col-sm-8 col-md-7
               col-md-push-1 col-lg-7">
-              {childs}
+              <Route exact path="/:user" component={() => <MyTweets profile={this.state.profile} />} />
             </div>
           </div>
         </div>
