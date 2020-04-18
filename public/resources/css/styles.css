@@ -733,7 +733,7 @@ input[type="file"]{
   height: 5px;
 }
 
-#user-page .user-header .user-summary .user-summary-menu li.selected a::before{
+#user-page .user-header .user-summary .user-summary-menu li a.selected::before{
   display: block;
   height: 5px;
 }

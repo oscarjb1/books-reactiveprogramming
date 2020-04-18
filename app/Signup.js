@@ -1,7 +1,7 @@
 import React from 'react'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-import { browserHistory,Link } from 'react-router'
+import browserHistory from './History'
 
 class Signup extends React.Component{
 
@@ -83,7 +83,6 @@ class Signup extends React.Component{
 
     APIInvoker.invokePOST('/signup',request, response => {
       browserHistory.push('/login');
-      alert('Usuario registrado correctamente');
     },error => {
       console.log("Error al cargar los Tweets");
       this.refs.submitBtnLabel.innerHTML = response.error
@@ -104,7 +103,7 @@ class Signup extends React.Component{
         </div>
         <div className="signup-form">
           <form onSubmit={this.signup.bind(this)}>
-            <h1>Únite hoy a Twitter</h1>
+            <h1>Únete hoy a Twitter</h1>
             <input type="text" value={this.state.username}
               placeholder="@usuario" name="username" id="username"
               onBlur={this.validateUser.bind(this)}
@@ -133,7 +132,6 @@ class Signup extends React.Component{
             <p className="bg-danger user-test">Crea un usuario o usa el usuario
               <strong>test/test</strong></p>
             <p>¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link> </p>
-            <p>¿Ya tienes cuenta? Iniciar sesión</p>
           </form>
         </div>
       </div>
