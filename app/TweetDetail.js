@@ -2,18 +2,13 @@ import React from 'react'
 import Reply from './Reply'
 import Tweet from './Tweet'
 import APIInvoker from './utils/APIInvoker'
-import update from 'react-addons-update'
-import { browserHistory } from 'react-router'
-import PropTypes from 'prop-types'
+import update from 'immutability-helper'
+import browserHistory from './History'
 
 class TweetDetail extends React.Component{
 
-  constructor(props){
-    super(props)
-  }
-
-  componentWillMount(){
-    let tweet = this.props.params.tweet
+  componentDidMount(){
+    let tweet = this.props.match.params.tweet
     APIInvoker.invokeGET('/tweetDetails/'+tweet, response => {
       this.setState( response.body)
     },error => {
@@ -29,7 +24,7 @@ class TweetDetail extends React.Component{
     this.setState(newState)
 
     let request = {
-      tweetParent: this.props.params.tweet,
+      tweetParent: this.props.match.params.tweet,
       message: newTweet.message,
       image: newTweet.image
     }
@@ -46,14 +41,8 @@ class TweetDetail extends React.Component{
   }
 
   render(){
-    $( "html" ).addClass( "modal-mode");
-
-    let operations = {
-      addNewTweet: this.addNewTweet.bind(this)
-    }
-
     return(
-      <div className="fullscreen">
+      <>
         <Choose>
           <When condition={this.state == null}>
             <div className="tweet-detail">
@@ -68,7 +57,7 @@ class TweetDetail extends React.Component{
               <Tweet tweet={this.state} detail={true} />
               <div className="tweet-details-reply">
                 <Reply profile={this.state._creator}
-                  operations={operations}
+                  operations={{addNewTweet: this.addNewTweet.bind(this)}}
                   key={"detail-" + this.state._id} newReply={false}/>
               </div>
               <ul className="tweet-detail-responses">
@@ -83,7 +72,7 @@ class TweetDetail extends React.Component{
             </div>
           </Otherwise>
         </Choose>
-      </div>
+      </>
     )
   }
 }
