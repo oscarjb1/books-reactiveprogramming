@@ -7,6 +7,7 @@ import Login from './Login'
 import UserPage from './UserPage'
 import TwitterDashboard from './TwitterDashboard'
 import Toolbar from './Toolbar';
+import UserContext from './context/UserContext'
 
 class TwitterApp extends React.Component {
 
@@ -49,18 +50,17 @@ class TwitterApp extends React.Component {
     }
 
     return (
-      <>
+      <UserContext.Provider value={this.state.profile}>
         <Toolbar profile={this.state.profile} />
         <div id="mainApp" className="animated fadeIn">
           <Switch>
-            <Route exact path="/" component={() =>
-              <TwitterDashboard profile={this.state.profile} />} />
+            <Route exact path="/" component={TwitterDashboard} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
             <Route path="/:user" component={UserPage} />
           </Switch>
         </div>
-      </>
+      </UserContext.Provider>
     )
   }
 }

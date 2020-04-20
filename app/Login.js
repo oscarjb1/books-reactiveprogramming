@@ -2,6 +2,8 @@ import React from 'react'
 import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
 import { Link } from 'react-router-dom'
+import UserContext from './context/UserContext'
+import {Redirect} from 'react-router-dom'
 
 class Login extends React.Component{
 
@@ -51,6 +53,10 @@ class Login extends React.Component{
 
   render(){
 
+    if(this.context != null){
+      return <Redirect to="/"/>
+    }
+
     return(
       <div id="signup">
         <div className="container" >
@@ -87,4 +93,7 @@ class Login extends React.Component{
     )
   }
 }
+
+Login.contextType = UserContext
+
 export default Login
