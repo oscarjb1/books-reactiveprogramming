@@ -2,6 +2,7 @@ import React from 'react'
 import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
 import browserHistory from './History'
+import {Link} from 'react-router-dom'
 
 class Signup extends React.Component{
 
