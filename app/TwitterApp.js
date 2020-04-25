@@ -7,6 +7,7 @@ import Login from './Login'
 import UserPage from './UserPage'
 import TwitterDashboard from './TwitterDashboard'
 import Toolbar from './Toolbar';
+import AuthRoute from './AuthRoute'
 
 class TwitterApp extends React.Component {
 
@@ -53,11 +54,11 @@ class TwitterApp extends React.Component {
         <Toolbar profile={this.state.profile} />
         <div id="mainApp" className="aminate fadeIn">
           <Switch>
-            <Route exact path="/" component={() =>
+            <AuthRoute isLoged={this.state.profile != null} exact path="/" component={() =>
               <TwitterDashboard profile={this.state.profile} />} />
-            <Route exact path="/signup" component={Signup} />
+            <AuthRoute exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/:user" component={UserPage} />
+            <AuthRoute isLoged={this.state.profile != null} path="/:user" component={UserPage} />
           </Switch>
           <div id="dialog" />
         </div>
