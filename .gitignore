@@ -1,1 +1,6 @@
 node_modules/
+app/context/dist
+app/dist
+app/hooks/dist
+app/utils/dist
+dist
