@@ -56,7 +56,7 @@ class TwitterApp extends React.Component {
           <Switch>
             <AuthRoute isLoged={this.state.profile != null} exact path="/" component={() =>
               <TwitterDashboard profile={this.state.profile} />} />
-            <AuthRoute exact path="/signup" component={Signup} />
+            <Route exact path="/signup" component={Signup} />
             <Route exact path="/login" component={Login} />
             <AuthRoute isLoged={this.state.profile != null} path="/:user" component={UserPage} />
           </Switch>
