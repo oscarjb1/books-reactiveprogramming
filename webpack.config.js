@@ -1,6 +1,5 @@
-// var webpack = require('webpack')
-
 module.exports = {
+  mode: "development", //development
   entry: [
     __dirname + "/app/App.js",
   ],
@@ -9,24 +8,24 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/public"
   },
-
+  devServer:{
+    port: 8080,
+    historyApiFallback: true
+  },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-      query:{
-        presets: ['env','react'],
-        plugins: ["jsx-control-statements"]
+      exclude: [/node_modules/],
+      loader: 'babel-loader',
+      options: {
+        presets: ["@babel/preset-env", "@babel/preset-react"],
+        plugins: [
+          "@babel/plugin-proposal-class-properties",
+          "@babel/plugin-proposal-export-default-from",
+          "react-hot-loader/babel",
+          "module:jsx-control-statements"
+        ]
       }
     }]
-  },
-  // plugins: [
-  //   new webpack.DefinePlugin({
-  //     'process.env': {
-  //       NODE_ENV: JSON.stringify('production')
-  //     }
-  //   }),
-  //   new webpack.optimize.UglifyJsPlugin()
-  // ]
-};
+  }
+}
