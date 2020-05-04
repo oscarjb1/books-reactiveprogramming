@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import UserCard from './UserCard'
-import APIInvoker from './utils/APIInvoker'
 import PropTypes from 'prop-types'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
+import { connect } from 'react-redux'
+import { loadFollowings } from './redux/actions/userPageActions'
 
 const Followings = (props) => {
 
-  const [state, setState] = useState([])
-
   useEffect(() => {
-    let username = props.profile.userName
-    APIInvoker.invokeGET(`/followings/${username}`, response => {
-      setState(response.body)
-    }, error => {
-      console.log("Error =>", error);
-    })
+    if (props.state === null) {
+      props.loadFollowings()
+    }
   }, [props.profile.userName])
 
   return (
@@ -29,7 +25,7 @@ const Followings = (props) => {
             transitionAppearTimeout={0}
             transitionLeave={false}
             transitionLeaveTimeout={0}>
-            <For each="user" of={state}>
+            <For each="user" of={props.state || []}>
               <div className="col-xs-12 col-sm-6 col-lg-4"
                 key={user._id}>
                 <UserCard user={user} />
@@ -46,4 +42,10 @@ Followings.propTypes = {
   profile: PropTypes.object
 }
 
-export default Followings;
+function mapStateToProps(state) {
+  return { 
+    state: state.userPage.followings
+  }
+}
+
+export default connect(mapStateToProps, {loadFollowings})(Followings)

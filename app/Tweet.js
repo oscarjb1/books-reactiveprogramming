@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link, Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import history from './History'
-import Modal from './Modal';
-import TweetDetail from './TweetDetail';
+import APIInvoker from './utils/APIInvoker'
+import update from 'immutability-helper'
 
 class Tweet extends React.Component {
 
@@ -23,6 +23,27 @@ class Tweet extends React.Component {
     let url = `/${this.state.tweet._creator.userName}/tweet/${this.state.tweet._id}`
     history.push(url)
   }
+
+  handleLike(e) {
+    e.preventDefault()
+    let request = {
+      tweetID: this.state.tweet._id,
+      like: !this.state.tweet.liked
+    }
+
+    APIInvoker.invokePOST('/secure/like', request, response => {
+      let newState = update(this.state, {
+        tweet: {
+          likeCounter: { $set: response.body.likeCounter },
+          liked: { $apply: (x) => { return !x } }
+        }
+      })
+      this.setState(newState)
+    }, error => {
+      console.log("Error al actualizar el Tweet", error);
+    })
+  }
+
 
 
   render() {
@@ -53,6 +74,7 @@ class Tweet extends React.Component {
           </If>
           <div className="tweet-footer">
             <a className={this.state.tweet.liked ? 'like-icon liked' : 'like-icon'}
+              onClick={this.handleLike.bind(this)}
               data-ignore-onclick>
               <i className="fa fa-heart " aria-hidden="true"
                 data-ignore-onclick></i> {this.state.tweet.likeCounter}

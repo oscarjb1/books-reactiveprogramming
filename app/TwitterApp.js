@@ -9,6 +9,9 @@ import Toolbar from './Toolbar';
 import UserContext from './context/UserContext'
 import useLogin from './hooks/useLogin'
 import AuthRoute from './AuthRoute'
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
 
 const TwitterApp = (props) => {
 
@@ -19,15 +22,17 @@ const TwitterApp = (props) => {
 
     return (
       <UserContext.Provider value={user}>
-        <Toolbar/>
-        <div id="mainApp" className="animated fadeIn">
-          <Switch>
-            <AuthRoute isLoged={user != null} exact path="/" component={TwitterDashboard} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/login" component={Login} />
-            <AuthRoute isLoged={user != null} path="/:user" component={UserPage} />
-          </Switch>
-        </div>
+        <Provider store={store} >
+          <Toolbar />
+          <div id="mainApp" className="animated fadeIn">
+            <Switch>
+              <AuthRoute isLoged={user != null} exact path="/" component={TwitterDashboard} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/login" component={Login} />
+              <AuthRoute isLoged={user != null} path="/:user" component={UserPage} />
+            </Switch>
+          </div>
+        </Provider>
       </UserContext.Provider>
     )
   }

@@ -1003,4 +1003,8 @@ html.modal-mode{
   border-bottom: 1px solid #E6ECF0;  
 }  
 
-  
+.no-tweets{
+  border-top: 1px solid #E6ECF0; 
+  padding: 15px 15px 10px 15px;
+  text-align: center;
+}

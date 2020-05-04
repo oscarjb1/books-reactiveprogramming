@@ -58,7 +58,7 @@ class Login extends React.Component{
     }
 
     return(
-      <div id="signup">
+      <div id="signup" className="animated fadeIn">
         <div className="container" >
           <div className="row">
             <div className="col-xs-12">

@@ -1,98 +1,62 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Tweet from './Tweet'
 import Reply from './Reply'
-import update from 'immutability-helper'
-import APIInvoker from "./utils/APIInvoker"
 import PropTypes from 'prop-types'
+import InfiniteScroll from 'react-infinite-scroller';
+import { useDispatch, useSelector } from 'react-redux'
+import { getTweet, addTweet } from './redux/actions/tweetsActions'
 
-class TweetsContainer extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      tweets: []
-    }
+const TweetsContainer = (props) => {
+
+  const dispatch = useDispatch()
+
+  const tweets = useSelector(state => state.tweets.tweets)
+  const hasMore = useSelector(state => state.tweets.hasMore)
+
+  useEffect(() => {
+    const username = props.profile.userName
+    const onlyUserTweet = props.onlyUserTweet
+    dispatch(getTweet(username, onlyUserTweet, 0))
+  }, [props.profile.userName, props.onlyUserTweet])
+
+  const addNewTweet = (newTweet) => {
+    dispatch(addTweet(newTweet))
   }
 
-  componentDidMount() {
-    let username = this.props.profile.userName
-    let onlyUserTweet = this.props.onlyUserTweet
-    this.loadTweets(username, onlyUserTweet)
+  const loadMore = (page) => {
+    const username = props.profile.userName
+    const onlyUserTweet = props.onlyUserTweet
+    dispatch(getTweet(username, onlyUserTweet, page - 1))
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    let prevUser = prevProps.profile.userName
-    let newUser = this.props.profile.userName
-
-    let prevUserTweet = prevProps.onlyUserTweet
-    let newUserTweet = this.props.onlyUserTweet
-
-    if (newUserTweet != prevUserTweet || prevUser != newUser) {
-      let onlyUserTweet = this.props.onlyUserTweet
-      this.loadTweets(newUser, onlyUserTweet)
-    }
-  }
-
-
-  loadTweets(username, onlyUserTweet) {
-    let url = '/tweets' + (onlyUserTweet ? "/" + username : "")
-    APIInvoker.invokeGET(url, response => {
-      this.setState({
-        tweets: response.body
-      })
-    }, error => {
-      console.log("Error al cargar los Tweets", error);
-    })
-  }
-
-  addNewTweet(newTweet) {
-    let oldState = this.state;
-    let newState = update(this.state, {
-      tweets: { $splice: [[0, 0, newTweet]] }
-    })
-
-    this.setState(newState)
-
-    //Optimistic Update
-    APIInvoker.invokePOST('/secure/tweet', newTweet, response => {
-      this.setState(update(this.state, {
-        tweets: {
-          0: {
-            _id: { $set: response.tweet._id }
-          }
-        }
-      }))
-    }, error => {
-      console.log("Error al cargar los Tweets");
-      this.setState(oldState)
-    })
-  }
-
-  render() {
-
-    let operations = {
-      addNewTweet: this.addNewTweet.bind(this)
-    }
-
-    return (
-      <main className="twitter-panel">
-        <Choose>
-          <When condition={this.props.onlyUserTweet} >
-            <div className="tweet-container-header">
-              TweetsDD
+  return (
+    <main className="twitter-panel">
+      <Choose>
+        <When condition={props.onlyUserTweet} >
+          <div className="tweet-container-header">
+            TweetsDD
             </div>
-          </When>
-          <Otherwise>
-            <Reply profile={this.props.profile} operations={operations} />
-          </Otherwise>
-        </Choose>
-        <If condition={this.state.tweets != null}>
-          <For each="tweet" of={this.state.tweets}>
-            <Tweet key={tweet._id} tweet={tweet} />
-          </For>
-        </If>
-      </main>
-    )
-  }
+        </When>
+        <Otherwise>
+          <Reply profile={props.profile} operations={{ addNewTweet }} />
+        </Otherwise>
+      </Choose>
+      <InfiniteScroll
+        pageStart={1}
+        loadMore={loadMore}
+        hasMore={hasMore}
+        loader={<div className="loader" key={0}>Loading ...</div>} >
+
+        <For each="tweet" of={tweets}>
+          <Tweet key={tweet._id} tweet={tweet} />
+        </For>
+      </InfiniteScroll>
+      <If condition={!hasMore} >
+        <p className="no-tweets">No hay tweets que mostrar</p>
+      </If>
+    </main>
+  )
+
 }
 
 TweetsContainer.propTypes = {
