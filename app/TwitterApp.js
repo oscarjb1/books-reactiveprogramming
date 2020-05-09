@@ -1,79 +1,42 @@
-import React from 'react'
-import APIInvoker from "./utils/APIInvoker"
-import Toolbar from './Toolbar'
-import { browserHistory } from 'react-router'
+import React, { useEffect } from 'react'
+import browserHistory from './History'
+import { Route, Switch, Redirect } from "react-router-dom";
+import Signup from './Signup'
+import Login from './Login'
+import UserPage from './UserPage'
 import TwitterDashboard from './TwitterDashboard'
-import { connect } from 'react-redux'
-import { relogin } from './actions/Actions'
+import Toolbar from './Toolbar';
+import UserContext from './context/UserContext'
+import useLogin from './hooks/useLogin'
+import AuthRoute from './AuthRoute'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
-class TwitterApp extends React.Component{
 
-  constructor(props){
-    super(props)
-    // this.state = {
-    //   load: true,
-    //   profile: null
-    // }
-  }
+const TwitterApp = (props) => {
 
-  componentWillMount(){
-    this.props.relogin()
-  }
+  const [load, user] = useLogin()
 
-  // componentWillMount(){
-  //   let token = window.localStorage.getItem("token")
-  //   if(token == null){
-  //     browserHistory.push('/login')
-  //     this.setState({
-  //       load: true,
-  //       profile: null
-  //     })
-  //   }else{
-  //     APIInvoker.invokeGET('/secure/relogin', response => {
-  //       this.setState({
-  //         load: true,
-  //         profile: response.profile
-  //       });
-  //       window.localStorage.setItem("token", response.token)
-  //       window.localStorage.setItem("username", response.profile.userName)
-  //     },error => {
-  //       console.log("Error al autenticar al autenticar al usuario " );
-  //       window.localStorage.removeItem("token")
-  //       window.localStorage.removeItem("username")
-  //       browserHistory.push('/login');
-  //     })
-  //   }
-  // }
+  const render = () => {
+    if (!load) return null
 
-  render(){
     return (
-      <div id="mainApp">
-        <Toolbar profile={this.props.profile} />
-        <Choose>
-          <When condition={!this.props.load}>
-            <div className="tweet-detail">
-              <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-            </div>
-          </When>
-          <When condition={this.props.children == null
-            && this.props.profile != null}>
-            <TwitterDashboard  profile={this.props.profile}/>
-          </When>
-          <Otherwise>
-            {this.props.children}
-          </Otherwise>
-        </Choose>
-        <div id="dialog"/>
-      </div>
+      <UserContext.Provider value={user}>
+        <Provider store={store} >
+          <Toolbar />
+          <div id="mainApp" className="animated fadeIn">
+            <Switch>
+              <AuthRoute isLoged={user != null} exact path="/" component={TwitterDashboard} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/login" component={Login} />
+              <AuthRoute isLoged={user != null} path="/:user" component={UserPage} />
+            </Switch>
+          </div>
+        </Provider>
+      </UserContext.Provider>
     )
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    load: state.loginReducer.load,
-    profile: state.loginReducer.profile
-  }
+  return render()
 }
-
-export default connect(mapStateToProps, { relogin })(TwitterApp);
+export default TwitterApp

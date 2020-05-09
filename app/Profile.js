@@ -1,78 +1,63 @@
 import React from 'react'
-import { Link } from 'react-router'
-// import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
-class Profile extends React.Component{
+const Profile = (props) => {
 
-  constructor(props){
-    super(props)
-    // this.state = {}
-  }
-
-
-  render(){
-    let bannerStyle = {
-      backgroundImage: (this.props.profile.banner!=null ?
-        'url('+this.props.profile.banner +')' : 'none')
-    }
-    return(
-      <aside id="profile" className="twitter-panel">
-        <div className="profile-banner">
-          <Link to={"/" + this.props.profile.userName}
-          className="profile-name" style={bannerStyle}/>
+  return (
+    <aside id="profile" className="twitter-panel">
+      <div className="profile-banner">
+        <Link to={"/" + props.profile.userName}
+          className="profile-name" style={{
+            backgroundImage: (props.profile.banner!=null
+                ? `url('${props.profile.banner}')`
+                : 'none')}}
+          />
         </div>
-        <div className="profile-body">
-          <img className="profile-avatar" src={this.props.profile.avatar}/>
-          <Link to={"/" + this.props.profile.userName}
-            className="profile-name">
-            {this.props.profile.name}
-          </Link>
-          <Link to={"/" + this.props.profile.userName}
-            className="profile-username">
-            @{this.props.profile.userName}
-          </Link>
-        </div>
-        <div className="profile-resumen">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-xs-3">
-                <Link to={"/"+this.props.profile.userName}>
-                  <p className="profile-resumen-title">TWEETS</p>
-                  <p className="profile-resumen-value">
-                    {this.props.profile.tweetCount}</p>
-                </Link>
-              </div>
-              <div className="col-xs-4">
-                <Link to={"/"+this.props.profile.userName + "/following"}>
-                  <p className="profile-resumen-title">SIGUIENDO</p>
-                  <p className="profile-resumen-value">
-                    {this.props.profile.following}</p>
-                </Link>
-              </div>
-              <div className="col-xs-5">
-                <Link to={"/"+this.props.profile.userName + "/followers"}>
-                  <p className="profile-resumen-title">SEGUIDORES</p>
-                  <p className="profile-resumen-value">
-                    {this.props.profile.followers}</p>
-                </Link>
-              </div>
+      <div className="profile-body">
+        <img className="profile-avatar" src={props.profile.avatar} />
+        <Link to={"/" + props.profile.userName}
+          className="profile-name">
+          {props.profile.name}
+        </Link>
+        <Link to={"/" + props.profile.userName}
+          className="profile-username">
+          @{props.profile.userName}
+        </Link>
+      </div>
+      <div className="profile-resumen">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xs-3">
+              <Link to={`/${props.profile.userName}`}>
+                <p className="profile-resumen-title">TWEETS</p>
+                <p className="profile-resumen-value">
+                  {props.profile.tweetCount}</p>
+              </Link>
+            </div>
+            <div className="col-xs-4">
+              <Link to={`/${props.profile.userName}/following`}>
+                <p className="profile-resumen-title">SIGUIENDO</p>
+                <p className="profile-resumen-value">
+                  {props.profile.following}</p>
+              </Link>
+            </div>
+            <div className="col-xs-5">
+              <Link to={`/${props.profile.userName}/followers`}>
+                <p className="profile-resumen-title">SEGUIDORES</p>
+                <p className="profile-resumen-value">
+                  {props.profile.followers}</p>
+              </Link>
             </div>
           </div>
         </div>
-      </aside>
-    )
-  }
+      </div>
+    </aside>
+  )
 }
 
-// Profile.propTypes = {
-//   profile: PropTypes.object.isRequired
-// }
-
-const mapStateToProps = (state) => {
-  return {
-    profile: state.loginReducer.profile
-  }
+Profile.propTypes = {
+  profile: PropTypes.object.isRequired
 }
 
-export default connect(mapStateToProps, {}) (Profile);
+export default Profile;

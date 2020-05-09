@@ -1,189 +1,76 @@
-import React from 'react'
-import update from 'react-addons-update'
+import React, { useEffect } from 'react'
+import update from 'immutability-helper'
 import APIInvoker from './utils/APIInvoker'
-import { Link } from 'react-router'
-import { connect } from 'react-redux'
-import {
-  getUserProfile,
-  chageToEditMode,
-  cancelEditMode,
-  updateUserPageForm,
-  userPageImageUpload,
-  userPageSaveChanges,
-  followUser,
-  relogin}
-from './actions/Actions'
+import { NavLink } from 'react-router-dom'
+import MyTweets from './MyTweets'
+import { Route, Switch } from 'react-router-dom'
+import Followings from './Followings'
+import Followers from './Followers'
+import TweetDetail from './TweetDetail'
+import Modal from './Modal'
+import UserContext from './context/UserContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadProfile, toggleEditMode, follow, handleInput, save, rest } from './redux/actions/userPageActions'
+import {resetTweets} from './redux/actions/tweetsActions'
 
-class UserPage extends React.Component{
+const UserPage = (props) => {
 
-  constructor(props){
-    super(props)
-    // this.state = {
-    //   edit: false,
-    //   profile:{
-    //     name: "",
-    //     description: "",
-    //     avatar: null,
-    //     banner: null,
-    //     userName: ""
-    //   }
-    // }
+  const userContext = React.useContext(UserContext)
+
+  const dispath = useDispatch()
+  const profile = useSelector(state => state.userPage.profile)
+  const edit = useSelector(state => state.userPage.edit)
+
+  useEffect(() => {
+    dispath(resetTweets())
+    dispath(rest())
+    dispath(loadProfile(props.match.params.user))
+
+    return () => {
+      dispath(rest())
+    }
+  }, [props.match.params.user])
+
+  const handleImageChange = (e) => {
+    e.preventDefault();
+
+    let file = e.target.files[0];
+    if (file.size > 1240000) {
+      alert('La imagen supera el máximo de 1MB')
+      return
+    }
+
+    let reader = new FileReader()
+    reader.onloadend = () => {
+      dispath(handleInput(e.target.id, reader.result))
+    }
+    reader.readAsDataURL(file)
   }
 
-  componentWillMount(){
-    let user = this.props.params.user
-    this.props.getUserProfile(user)
 
-    // APIInvoker.invokeGET('/profile/' + user, response => {
-    //   this.setState({
-    //     edit:false,
-    //     profile: response.body
-    //   });
-    // },error => {
-    //   console.log("Error al cargar los Tweets");
-    //   window.location = '/'
-    // })
-  }
-
-  imageSelect(e){
+  const handleInputChange = (e) => {
     let id = e.target.id
-    this.props.userPageImageUpload(e)
-
-    // e.preventDefault();
-    // let reader = new FileReader();
-    // let file = e.target.files[0];
-    //
-    // if(file.size > 1240000){
-    //   alert('La imagen supera el máximo de 1MB')
-    //   return
-    // }
-    //
-    // reader.onloadend = () => {
-    //   if(id == 'bannerInput'){
-    //     this.setState(update(this.state,{
-    //       profile: {
-    //         banner: {$set: reader.result}
-    //       }
-    //     }))
-    //   }else{
-    //     this.setState(update(this.state,{
-    //       profile: {
-    //         avatar: {$set: reader.result}
-    //       }
-    //     }))
-    //   }
-    // }
-    // reader.readAsDataURL(file)
+    let value = e.target.value
+    dispath(handleInput(id, value))
   }
 
-  handleInput(e){
-    this.props.updateUserPageForm(e)
+  const render = () => {
+    if(profile === null) return null
 
-    // let id = e.target.id
-    // this.setState(update(this.state,{
-    //   profile: {
-    //     [id]: {$set: e.target.value}
-    //   }
-    // }))
-  }
-
-  cancelEditMode(e){
-    this.props.cancelEditMode()
-
-    // let currentState = this.state.currentState
-    // this.setState(update(this.state,{
-    //   edit: {$set: false},
-    //   profile: {$set: currentState}
-    // }))
-  }
-
-  changeToEditMode(e){
-    if(this.props.state.edit){
-      this.props.userPageSaveChanges()
-      this.props.relogin()
-    }else{
-      this.props.chageToEditMode()
-    }
-
-    // if(this.state.edit){
-    //   let request = {
-    //     username: this.state.profile.userName,
-    //     name: this.state.profile.name,
-    //     description: this.state.profile.description,
-    //     avatar: this.state.profile.avatar,
-    //     banner: this.state.profile.banner
-    //   }
-    //
-    //   APIInvoker.invokePUT('/secure/profile', request, response => {
-    //     if(response.ok){
-    //       this.setState(update(this.state,{
-    //         edit: {$set: false}
-    //       }))
-    //     }
-    //   },error => {
-    //     console.log("Error al actualizar el perfil");
-    //   })
-    // }else{
-    //   let currentState = this.state.profile
-    //   this.setState(update(this.state,{
-    //     edit: {$set: true},
-    //     currentState: {$set: currentState}
-    //   }))
-    // }
-  }
-
-  follow(e){
-    if(!$('#followBtn').hasClass('disabled')){
-      $('#followBtn').addClass('disabled')
-      setTimeout(function(e){
-        $('#followBtn').removeClass('disabled')
-      }, 5000);
-      this.props.followUser(this.props.params.user)
-    }
-
-    // this.props.relogin()
-
-    // let request = {
-    //   followingUser: this.props.params.user
-    // }
-    // APIInvoker.invokePOST('/secure/follow', request, response => {
-    //   if(response.ok){
-    //     this.setState(update(this.state,{
-    //       profile:{
-    //         follow: {$set: !response.unfollow}
-    //       }
-    //     }))
-    //   }
-    // },error => {
-    //   console.log("Error al actualizar el perfil");
-    // })
-  }
-
-  render(){
-    let profile = this.props.state.profile
-    let storageUserName = window.localStorage.getItem("username")
-
-    let bannerStyle = {
-      backgroundImage: 'url(' + (profile.banner) + ')'
-    }
-
-    // let childs = this.props.children
-    //   && React.cloneElement(this.props.children, { profile: profile })
-
-    return(
-      <div id="user-page" className="app-container">
+    return (
+      <div id="user-page" className="app-container animated fadeIn">
         <header className="user-header">
-          <div className="user-banner" style={bannerStyle}>
-            <If condition={this.props.state.edit}>
+          <div className="user-banner" style={{ backgroundImage: 'url(' + (profile.banner) + ')' }}>
+            <If condition={edit}>
               <div>
-                <label htmlFor="bannerInput" className="btn select-banner">
+                <label htmlFor="banner" className="btn select-banner">
                   <i className="fa fa-camera fa-2x" aria-hidden="true"></i>
                   <p>Cambia tu foto de encabezado</p>
                 </label>
                 <input href="#" className="btn"
                   accept=".gif,.jpg,.jpeg,.png"
-                  type="file" id="bannerInput"
-                  onChange={this.imageSelect.bind(this)}  />
+                  type="file" id="banner"
+                  onChange={handleImageChange} />
               </div>
             </If>
           </div>
@@ -196,40 +83,40 @@ class UserPage extends React.Component{
                 <div className="col-xs-12 col-sm-8 col-md-push-1
                   col-md-7 col-lg-push-1 col-lg-7">
                   <ul className="user-summary-menu">
-                    <li className={this.props.route.tab === 'tweets' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName}>
+                    <li>
+                      <NavLink to={`/${profile.userName}`} exact
+                        activeClassName="selected">
                         <p className="summary-label">TWEETS</p>
                         <p className="summary-value">{profile.tweetCount}</p>
-                      </Link>
+                      </NavLink>
                     </li>
-                    <li className={this.props.route.tab === 'followings' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/following" }>
+                    <li>
+                      <NavLink to={`/${profile.userName}/following`}
+                        activeClassName="selected">
                         <p className="summary-label">SIGUIENDO</p>
                         <p className="summary-value">{profile.following}</p>
-                      </Link>
+                      </NavLink>
                     </li>
-                    <li className={this.props.route.tab === 'followers' ?
-                      'selected':''}>
-                      <Link to={"/" + profile.userName + "/followers" }>
+                    <li>
+                      <NavLink to={`/${profile.userName}/followers`}
+                        activeClassName="selected">
                         <p className="summary-label">SEGUIDORES</p>
                         <p className="summary-value">{profile.followers}</p>
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
 
-                  <If condition={profile.userName === storageUserName}>
+                  <If condition={profile.userName === userContext.userName}>
                     <button className="btn btn-primary  edit-button"
-                      onClick={this.changeToEditMode.bind(this)}  >
-                      {this.props.state.edit ? "Guardar" : "Editar perfil"}
-                    </button>
+                      onClick={() => dispath(edit ? save() : toggleEditMode())}  >
+                      {edit ? "Guardar" : "Editar perfil"}</button>
                   </If>
 
+
                   <If condition={profile.follow != null &&
-                    profile.userName !== storageUserName} >
-                    <button id="followBtn" className="btn edit-button"
-                      onClick={this.follow.bind(this)} >
+                    profile.userName !== userContext.userName} >
+                    <button className="btn edit-button"
+                      onClick={() => dispath(follow())} >
                       {profile.follow
                         ? (<span><i className="fa fa-user-times"
                           aria-hidden="true"></i> Siguiendo</span>)
@@ -239,9 +126,9 @@ class UserPage extends React.Component{
                     </button>
                   </If>
 
-                  <If condition= {this.props.state.edit}>
+                  <If condition={edit}>
                     <button className="btn edit-button" onClick=
-                      {this.cancelEditMode.bind(this)} >Cancelar</button>
+                      {() => dispath(toggleEditMode())} >Cancelar</button>
                   </If>
                 </div>
               </div>
@@ -255,20 +142,20 @@ class UserPage extends React.Component{
               <aside id="user-info">
                 <div className="user-avatar">
                   <Choose>
-                    <When condition={this.props.state.edit} >
+                    <When condition={edit} >
                       <div className="avatar-box">
                         <img src={profile.avatar} />
-                        <label htmlFor="avatarInput"
+                        <label htmlFor="avatar"
                           className="btn select-avatar">
                           <i className="fa fa-camera fa-2x"
                             aria-hidden="true"></i>
                           <p>Foto</p>
                         </label>
-                        <input href="#" id="avatarInput"
+                        <input href="#" id="avatar"
                           className="btn" type="file"
                           accept=".gif,.jpg,.jpeg,.png"
-                          onChange={this.imageSelect.bind(this)}
-                           />
+                          onChange={handleImageChange}
+                        />
                       </div>
                     </When>
                     <Otherwise>
@@ -279,14 +166,14 @@ class UserPage extends React.Component{
                   </Choose>
                 </div>
                 <Choose>
-                  <When condition={this.props.state.edit} >
+                  <When condition={edit} >
                     <div className="user-info-edit">
                       <input maxLength="20" type="text" value={profile.name}
-                        onChange={this.handleInput.bind(this)} id="name"/>
+                        onChange={handleInputChange} id="name" />
                       <p className="user-info-username">@{profile.userName}</p>
-                      <textarea  maxLength="180" id="description"
+                      <textarea maxLength="180" id="description"
                         value={profile.description}
-                        onChange={this.handleInput.bind(this)} />
+                        onChange={handleInputChange} />
                     </div>
                   </When>
                   <Otherwise>
@@ -302,20 +189,23 @@ class UserPage extends React.Component{
             </div>
             <div className="col-xs-12 col-sm-8 col-md-7
               col-md-push-1 col-lg-7">
-              {this.props.children}
+              <Switch>
+                <Route exact path="/:user" component={
+                  () => <MyTweets profile={profile} />} />
+                <Route exact path="/:user/followers" component={
+                  () => <Followers profile={profile} />} />
+                <Route path="/:user/following" component={
+                  () => <Followings profile={profile} />} />
+                <Route exact path="/:user/tweet/:tweet" component={
+                  (params) => <Modal> <TweetDetail {...params} /> </Modal>} />
+              </Switch>
             </div>
           </div>
         </div>
       </div>
     )
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    state: state.userPageReducer
-  }
+  return render()
 }
-
-export default connect(mapStateToProps,
-  {getUserProfile, chageToEditMode, cancelEditMode, updateUserPageForm, userPageImageUpload, userPageSaveChanges, followUser, relogin})(UserPage);
+export default UserPage;

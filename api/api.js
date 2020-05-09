@@ -4,8 +4,13 @@ var userController = require('../api/controllers/UserController')
 var tweetController = require('../api/controllers/TweetController')
 const pug = require('pug')
 
-var configuration = require('../config')
+var configuration = require('../serverConfig')
 var jwt = require('jsonwebtoken')
+const { userValidationRules, userValidate } = require('./validators/userValidator')
+const { profileValidationRules, profileValidate } = require('./validators/profileValidator')
+const { tweetValidationRules, tweetValidate } = require('./validators/tweetValidator')
+
+
 
 const methodCatalog = require('../public/apidoc/meta/catalog.js')
 
@@ -65,18 +70,18 @@ router.get('/catalog/:method', function(req, res){
 //Private access services (security)
 router.get('/secure/relogin',userController.relogin)
 router.get('/secure/suggestedUsers',userController.getSuggestedUser)
-router.put('/secure/profile', userController.updateProfile)
+router.put('/secure/profile', profileValidationRules(), profileValidate, userController.updateProfile)
 router.post('/secure/follow', userController.follow)
-router.post('/secure/tweet', tweetController.addTweet)
+router.post('/secure/tweet', tweetValidationRules(), tweetValidate, tweetController.addTweet)
 router.post('/secure/like', tweetController.like)
 
-
 //Public access services
-router.get('/tweets/:user', tweetController.getUserTweets)
 router.get('/tweets',tweetController.getNewTweets)
+router.get('/tweets/:user', tweetController.getUserTweets)
+router.get('/tweets/:tweet/images', tweetController.getTweetImage )
 router.get('/usernameValidate/:username', userController.usernameValidate)
 router.get('/profile/:user',userController.getProfileByUsername)
-router.post('/signup', userController.signup)
+router.post('/signup', userValidationRules(), userValidate, userController.signup)
 router.post('/login', userController.login)
 router.get('/followings/:user',userController.getFollowing)
 router.get('/followers/:user',userController.getFollower)
