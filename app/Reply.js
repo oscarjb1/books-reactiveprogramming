@@ -2,8 +2,6 @@ import React from 'react'
 import update from 'immutability-helper'
 import config from '../config.js'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { updateReplyForm, resetReplyForm } from './actions/Actions'
 
 const uuidV4 = require('uuid/v4');
 
@@ -11,19 +9,29 @@ class Reply extends React.Component{
 
   constructor(props){
     super(props)
+    this.state={
+      focus: false,
+      message: '',
+      image: null
+    }
   }
 
   handleChangeMessage(e){
-    this.props.updateReplyForm(e.target.name,e.target.value)
+    this.setState(update(this.state,{
+      message: {$set: e.target.value}
+    }))
   }
 
   handleMessageFocus(e){
-    this.props.updateReplyForm('focus',true)
+    let newState = update(this.state,{
+        focus: {$set: true}
+    })
+    this.setState(newState)
   }
 
   handleMessageFocusLost(e){
-    if(this.props.state.reply.message.length=== 0){
-      this.props.resetReplyForm()
+    if(this.state.message.length=== 0){
+      this.reset();
     }
   }
 
@@ -35,31 +43,36 @@ class Reply extends React.Component{
   }
 
   reset(){
-    this.props.resetReplyForm()
-    this.refs.reply.blur();
+    let newState = update(this.state,{
+        focus: {$set: false},
+        message: {$set: ''},
+        image: {$set:null}
+    })
+    this.setState(newState)
+
+    this.reply.blur();
   }
 
   newTweet(e){
     e.preventDefault();
 
     let tweet = {
-      isNew: true,
       _id: uuidV4(),
       _creator: {
-        _id: this.props.state.profile._id,
-        name: this.props.state.profile.name,
-        userName: this.props.state.profile.userName,
-        avatar: this.props.state.profile.avatar
+        _id: this.props.profile._id,
+        name: this.props.profile.name,
+        userName: this.props.profile.userName,
+        avatar: this.props.profile.avatar
       },
       date: Date.now,
-      message: this.props.state.reply.message,
-      image: this.props.state.reply.image,
+      message: this.state.message,
+      image: this.state.image,
       liked: false,
       likeCounter: 0
     }
 
     this.props.operations.addNewTweet(tweet)
-    this.props.resetReplyForm()
+    this.reset();
   }
 
   imageSelect(e){
@@ -72,7 +85,10 @@ class Reply extends React.Component{
     }
 
     reader.onloadend = () => {
-      this.props.updateReplyForm('image', reader.result)
+      let newState = update(this.state,{
+        image: {$set: reader.result}
+      })
+      this.setState(newState)
     }
     reader.readAsDataURL(file)
   }
@@ -81,43 +97,39 @@ class Reply extends React.Component{
   render(){
     let randomID = uuidV4();
 
-    let reply = this.props.state.reply
-
     return (
       <section className="reply">
-        <img src={this.props.state.profile.avatar}
-          className="reply-avatar"/>
+        <If condition={this.props.profile!=null} >
+          <img src={this.props.profile.avatar} className="reply-avatar" />
+        </If>
         <div className="reply-body">
           <textarea
-            ref="reply"
+            ref={self => this.reply = self}
             name="message"
             type="text"
             maxLength = {config.tweets.maxTweetSize}
             placeholder="¿Qué está pensando?"
-            className={reply.focus ? 'reply-selected' : ''}
-            value={reply.message}
+            className={this.state.focus ? 'reply-selected' : ''}
+            value={this.state.message}
             onKeyDown={this.handleKeyDown.bind(this)}
             onBlur={this.handleMessageFocusLost.bind(this)}
             onFocus={this.handleMessageFocus.bind(this)}
             onChange={this.handleChangeMessage.bind(this)}
             />
-            <If condition={reply.image != null} >
-              <div className="image-box">
-                <img src={reply.image}/>
-              </div>
+            <If condition={this.state.image != null} >
+              <div className="image-box"><img src={this.state.image}/></div>
             </If>
+
         </div>
-        <div className={reply.focus ?
-          'reply-controls' : 'hidden'}>
+        <div className={this.state.focus ? 'reply-controls' : 'hidden'}>
           <label htmlFor={"reply-camara-" + randomID}
-            className={reply.message.length===0 ?
+            className={this.state.message.length===0 ?
               'btn pull-left disabled' : 'btn pull-left'}>
             <i className="fa fa-camera fa-2x" aria-hidden="true"></i>
           </label>
 
-          <input href="#"
-            className={reply.message.length===0 ?
-              'btn pull-left disabled' : 'btn pull-left'}
+          <input href="#" className={this.state.message.length===0 ?
+            'btn pull-left disabled' : 'btn pull-left'}
             accept=".gif,.jpg,.jpeg,.png"
             type="file"
             onChange={this.imageSelect.bind(this)}
@@ -125,10 +137,9 @@ class Reply extends React.Component{
           </input>
 
           <span ref="charCounter" className="char-counter">
-            {config.tweets.maxTweetSize - reply.message.length }
-          </span>
+            {config.tweets.maxTweetSize - this.state.message.length }</span>
 
-          <button className={reply.message.length===0 ?
+          <button className={this.state.message.length===0 ?
               'btn btn-primary disabled' : 'btn btn-primary '}
               onClick={this.newTweet.bind(this)}
               >
@@ -145,14 +156,4 @@ Reply.propTypes = {
   operations: PropTypes.object.isRequired
 }
 
-const mapStateToProps = state => {
-  return {
-    state:{
-      reply: state.replyReducer,
-      profile: state.loginReducer.profile
-    }
-  }
-}
-
-export default connect( mapStateToProps,
-  {updateReplyForm, resetReplyForm} )(Reply);
+export default Reply;

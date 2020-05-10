@@ -1,26 +1,38 @@
 import React from 'react'
 import Reply from './Reply'
 import Tweet from './Tweet'
+import APIInvoker from './utils/APIInvoker'
+import update from 'immutability-helper'
 import browserHistory from './History'
-import { loadTweetDetail, addNewTweetReply } from './actions/Actions'
-import { connect } from 'react-redux'
 
 class TweetDetail extends React.Component{
 
-  constructor(props){
-    super(props)
+  componentDidMount(){
     let tweet = this.props.match.params.tweet
-    this.props.loadTweetDetail(tweet)
+    APIInvoker.invokeGET('/tweetDetails/'+tweet, response => {
+      this.setState( response.body)
+    },error => {
+      console.log("Error al cargar los Tweets");
+    })
   }
 
   addNewTweet(newTweet){
     let oldState = this.state;
-    let tweet = this.props.match.params.tweet
-    this.props.addNewTweetReply(newTweet, tweet)
-  }
+    let newState = update(this.state, {
+      replysTweets: {$splice: [[0, 0, newTweet]]}
+    })
+    this.setState(newState)
 
-  componentWillUnmount(){
-    $( "html" ).removeClass( "modal-mode");
+    let request = {
+      tweetParent: this.props.match.params.tweet,
+      message: newTweet.message,
+      image: newTweet.image
+    }
+
+    APIInvoker.invokePOST('/secure/tweet', request, response => {
+    },error => {
+      console.log("Error al crear los Tweets");
+    })
   }
 
   handleClose(){
@@ -29,16 +41,10 @@ class TweetDetail extends React.Component{
   }
 
   render(){
-    $( "html" ).addClass( "modal-mode");
-
-    let operations = {
-      addNewTweet: this.addNewTweet.bind(this)
-    }
-
     return(
-      <div className="fullscreen">
+      <>
         <Choose>
-          <When condition={this.props.state == null}>
+          <When condition={this.state == null}>
             <div className="tweet-detail">
               <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
             </div>
@@ -48,15 +54,15 @@ class TweetDetail extends React.Component{
               <i className="fa fa-times fa-2x tweet-close"
                 aria-hidden="true"
                 onClick={this.handleClose.bind(this)}/>
-              <Tweet tweet={this.props.state} detail={true} />
+              <Tweet tweet={this.state} detail={true} />
               <div className="tweet-details-reply">
-                <Reply profile={this.props.state._creator}
-                  operations={operations}
-                  key={"detail-" + this.props.state._id} newReply={false}/>
+                <Reply profile={this.state._creator}
+                  operations={{addNewTweet: this.addNewTweet.bind(this)}}
+                  key={"detail-" + this.state._id} newReply={false}/>
               </div>
               <ul className="tweet-detail-responses">
-                <If condition={this.props.state.replysTweets != null} >
-                  <For each="reply" of={this.props.state.replysTweets}>
+                <If condition={this.state.replysTweets != null} >
+                  <For each="reply" of={this.state.replysTweets}>
                     <li className="tweet-details-reply" key={reply._id}>
                       <Tweet tweet={reply} detail={true}/>
                     </li>
@@ -66,16 +72,8 @@ class TweetDetail extends React.Component{
             </div>
           </Otherwise>
         </Choose>
-      </div>
+      </>
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    state: state.tweetDetailReducer
-  }
-}
-
-export default connect(mapStateToProps,
-  {loadTweetDetail, addNewTweetReply})(TweetDetail);
+export default TweetDetail;

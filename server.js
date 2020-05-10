@@ -14,59 +14,57 @@ var http = require('http')
 var https = require('https')
 
 function startServer() {
+    var opts = {
+        appname: "Mini Twitter",
+        poolSize: 10,
+        autoIndex: false,
+        bufferMaxEntries: 0,
+        loggerLevel: "error", //error / warn / info / debug
+        keepAlive: 120,
+        validateOptions: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+    }
 
-  var opts = {
-      appname: "Mini Twitter",
-      poolSize: 10,
-      autoIndex: false,
-      bufferMaxEntries: 0,
-      loggerLevel: "error", //error / warn / info / debug
-      keepAlive: 120,
-      validateOptions: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false
-  }
+    let connectString = configuration.mongodb.connectionString
+    mongoose.connect(connectString, opts, function (err) {
+        if (err) throw err;
+        console.log("==> Conexión establecida con MongoDB");
+    })
 
-  let connectString = configuration.mongodb.development.connectionString
-  mongoose.connect(connectString, opts, function(err){
-     if (err) throw err;
-     console.log("==> Conexión establecida con MongoDB");
-  })
+    app.use('*', require('cors')());
 
-  app.use('*', require('cors')());
+    app.use('/public', express.static(__dirname + '/public'))
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.json({ limit: '10mb' }))
 
-  app.use('/public', express.static(__dirname + '/public'))
-  app.use(bodyParser.urlencoded({extended: false}))
-  app.use(bodyParser.json({limit:'10mb'}))
+    if (process.env.NODE_ENV !== 'production') {
+        app.use(require('webpack-dev-middleware')(compiler, {
+            noInfo: true,
+            publicPath: config.output.publicPath
+        }))
+    }
 
-  if(process.env.NODE_ENV !== 'production'){
-    app.use(require('webpack-dev-middleware')(compiler, {
-        noInfo: true,
-        publicPath: config.output.publicPath
-    }))
-  }
+    app.use(vhost('api.*', api));
+    app.use(vhost('minitwitterapi.reactiveprogramming.io', api));
 
-  app.use(vhost('api.*', api));
-  app.use(vhost('minitwitterapi.reactiveprogramming.io', api));
+    app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'index.html'))
+    });
 
-  app.get('/*', function (req, res) {
-      res.sendFile(path.join(__dirname, 'index.html'))
-  });
+    https.createServer({
+        key: fs.readFileSync('./certs/key.pem'),
+        cert: fs.readFileSync('./certs/cert.pem'),
+        passphrase: '1234'
+    }, app).listen(configuration.server.securePort, () => {
+        console.log(`Example app listening on port ${configuration.server.securePort}!`)
+    });
 
-  https.createServer({
-    key: fs.readFileSync('./certs/key.pem'),
-    cert: fs.readFileSync('./certs/cert.pem'),
-    passphrase: '1234'
-  }, app).listen(configuration.server.port, () => {
-    console.log(`Example app listening on port ${configuration.server.securePort}!`)
-  });
-
-
-  http.createServer(app).listen(configuration.server.insecurePort);
+    http.createServer(app).listen(configuration.server.port);
 }
 
-if(require.main === module){
+if (require.main === module) {
     startServer();
 } else {
     module.exports = startServer;

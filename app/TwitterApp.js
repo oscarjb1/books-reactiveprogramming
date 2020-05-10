@@ -1,38 +1,42 @@
-import React from 'react'
-import Toolbar from './Toolbar'
+import React, { useEffect } from 'react'
+import browserHistory from './History'
+import { Route, Switch, Redirect } from "react-router-dom";
+import Signup from './Signup'
+import Login from './Login'
+import UserPage from './UserPage'
 import TwitterDashboard from './TwitterDashboard'
-import { connect } from 'react-redux'
-import { relogin } from './actions/Actions'
+import Toolbar from './Toolbar';
+import UserContext from './context/UserContext'
+import useLogin from './hooks/useLogin'
+import AuthRoute from './AuthRoute'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
-class TwitterApp extends React.Component {
 
-  constructor(args) {
-    super(args)
-    this.props.relogin()
-  }
+const TwitterApp = (props) => {
 
-  render() {
-    if (!this.props.load) {
-      return null
-    }
+  const [load, user] = useLogin()
+
+  const render = () => {
+    if (!load) return null
 
     return (
-      <>
-        <Toolbar />
-        <div id="mainApp" className="aminate fadeIn">
-          {this.props.children}
-          <div id="dialog" />
-        </div>
-      </>
+      <UserContext.Provider value={user}>
+        <Provider store={store} >
+          <Toolbar />
+          <div id="mainApp" className="animated fadeIn">
+            <Switch>
+              <AuthRoute isLoged={user != null} exact path="/" component={TwitterDashboard} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/login" component={Login} />
+              <AuthRoute isLoged={user != null} path="/:user" component={UserPage} />
+            </Switch>
+          </div>
+        </Provider>
+      </UserContext.Provider>
     )
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    load: state.loginReducer.load,
-    profile: state.loginReducer.profile
-  }
+  return render()
 }
-
-export default connect(mapStateToProps, { relogin })(TwitterApp);
+export default TwitterApp

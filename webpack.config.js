@@ -1,5 +1,5 @@
 module.exports = {
-  mode: "development", //development
+  mode: "development", // or production
   entry: [
     __dirname + "/app/App.js",
   ],
@@ -7,6 +7,17 @@ module.exports = {
     path: __dirname + "/public",
     filename: "bundle.js",
     publicPath: "/public"
+  },
+  devServer: {
+    port: 8080,
+    open: true,
+    overlay: {
+      warnings: true,
+      errors: true
+    },
+    disableHostCheck: true,
+    historyApiFallback: true,
+    hot: true
   },
   module: {
     rules: [{
@@ -24,4 +35,4 @@ module.exports = {
       }
     }]
   }
-};
+}

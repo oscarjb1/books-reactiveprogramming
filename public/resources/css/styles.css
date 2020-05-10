@@ -79,10 +79,6 @@ img {
   color: #999;
 }
 
-.tweet .tweet-message {
-  word-wrap: break-word;
-}
-
 .tweet.detail .tweet-body .tweet-user{
   margin-left: 70px;
 }
@@ -102,6 +98,10 @@ img {
 .tweet.detail .tweet-body .tweet-username{
   display: block;
   font-size: 16px;
+}
+
+.tweet .tweet-message{
+  overflow-wrap: anywhere;
 }
 
 .tweet.detail .tweet-message{
@@ -231,11 +231,6 @@ img {
   border: 1px solid #e6ecf0;
   border-radius: 5px;
   line-height: inherit;
-}
-
-.twitter-panel .no-tweets{
-  padding: 20px 10px 10px;
-  text-align: center;
 }
 
 #suggestedUsers,
@@ -378,6 +373,7 @@ img {
 /** Reply component **/
 
 .reply{
+  position: relative;
   padding: 10px;
   border-top: 1px solid #e6ecf0;
   background-color: #E8F4FB;
@@ -722,7 +718,6 @@ input[type="file"]{
   padding: 15px 15px 0px;
   display: inline-block;
   position: relative;
-  text-decoration: none;
 }
 
 #user-page .user-header .user-summary .user-summary-menu li a::before{
@@ -743,7 +738,7 @@ input[type="file"]{
   height: 5px;
 }
 
-#user-page .user-header .user-summary .user-summary-menu li.selected a::before{
+#user-page .user-header .user-summary .user-summary-menu li a.selected::before{
   display: block;
   height: 5px;
 }
@@ -963,56 +958,57 @@ input[type="file"]{
   margin: 30px;
 }*/
 
-
-
-
-/** TweetReply Component **/
-
-html.modal-mode{
-  overflow-y: hidden;
-}
-
-.fullscreen{
-  position: fixed;
-  background-color: rgba(0,0,0,0.5);
-  top: 0;
-  right: 0;
-  left: 0;
-  height: auto;
-  z-index: 999999;
-  overflow: auto;
-  bottom: 0;
-}
-
-.fullscreen .tweet-detail{
-  max-width: 700px;
-  overflow: hidden;
-  border-radius: 5px;
-  margin: auto;
-  margin-top: 50px;
-  margin-bottom: 100px;
+html.modal-mode{  
+  overflow-y: hidden;  
+}  
+  
+.fullscreen{  
+  position: fixed;  
+  background-color: rgba(0,0,0,0.5);  
+  top: 0;  
+  right: 0;  
+  left: 0;  
+  height: auto;  
+  z-index: 999999;  
+  overflow: auto;  
+  bottom: 0;  
+}  
+  
+.fullscreen .tweet-detail{  
   position: relative;
-  width: 60%;
-  background-color: #fff;
-}
+  max-width: 700px;  
+  overflow: hidden;  
+  border-radius: 5px;  
+  margin: auto;  
+  margin-top: 50px;  
+  margin-bottom: 100px;  
+  width: 60%;  
+  background-color: #fff;  
+}  
+  
+.fullscreen .tweet-detail .tweet-close{  
+  position: absolute;  
+  display: inline-block;  
+  right: 15px;  
+  top: 10px;  
+}  
+  
+.fullscreen .tweet-detail .tweet-close:hover{  
+  cursor: pointer;  
+}  
+  
+.tweet-detail .tweet-detail-responses{  
+  list-style: none;  
+  margin: 0px;  
+  padding: 0px;  
+}  
+  
+.tweet-detail .tweet-details-reply{  
+  border-bottom: 1px solid #E6ECF0;  
+}  
 
-.fullscreen .tweet-detail .tweet-close{
-  position: absolute;
-  display: inline-block;
-  right: 15px;
-  top: 10px;
-}
-
-.fullscreen .tweet-detail .tweet-close:hover{
-  cursor: pointer;
-}
-
-.tweet-detail .tweet-detail-responses{
-  list-style: none;
-  margin: 0px;
-  padding: 0px;
-}
-
-.tweet-detail .tweet-details-reply{
-  border-bottom: 1px solid #E6ECF0;
+.no-tweets{
+  border-top: 1px solid #E6ECF0; 
+  padding: 15px 15px 10px 15px;
+  text-align: center;
 }

@@ -18,14 +18,6 @@ class APIInvoker {
     this.invoke(url, okCallback, failCallback,params);
   }
 
-  invokeDELETE(url, okCallback, failCallback){
-    let params = {
-      method: 'delete',
-      headers: this.getAPIHeader()
-    }
-    this.invoke(url, okCallback, failCallback,params);
-  }
-
   invokePUT(url, body, okCallback, failCallback){
     let params = {
       method: 'put',
@@ -54,7 +46,7 @@ class APIInvoker {
 
     fetch(`${configuration.api.host}${url}`, params)
     .then((response) => {
-      if(debug) console.log("Invoke Response => ", response );
+      if(debug) console.log("Invoke Response => ", response )
       return response.json()
     })
     .then((responseData) => {
