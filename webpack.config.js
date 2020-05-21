@@ -8,6 +8,10 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/public"
   },
+  devServer:{
+    port: 8080,
+    historyApiFallback: true
+  },
   module: {
     rules: [{
       test: /\.jsx?$/,
