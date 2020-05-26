@@ -100,12 +100,17 @@ img {
   font-size: 16px;
 }
 
+.tweet .tweet-message{
+  overflow-wrap: break-word;
+}
+
 .tweet.detail .tweet-message{
   position: relative;
   display: block;
   margin-top: 25px;
   font-size: 26px;
   left: 0px;
+  overflow-wrap: break-word;
 }
 
 .reply-icon,

@@ -13,7 +13,9 @@ const TwitterDashboard = (props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(resetTweets())
+    return () => {
+      dispatch(resetTweets())
+    }
   })
 
   return (
